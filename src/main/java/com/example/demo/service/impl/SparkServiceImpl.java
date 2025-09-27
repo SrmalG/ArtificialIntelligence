@@ -19,18 +19,13 @@ import static org.apache.spark.sql.functions.col;
 public class SparkServiceImpl implements SparkService {
 
     @Override
-    public Dataset<Row> preprocessingDriver(final MultipartFile file) throws IOException {
+    public Dataset<Row> preprocessingDriver(final MultipartFile file, List<String> columns, String dateColumn) throws IOException {
         final SparkSession spark = SparkUtils.getSparkSession();
-        final Dataset<Row> dataset = SparkUtils.obtainDatasetFromInput(file,spark);
-        final Dataset<Row> dataset1 = SparkValidation.erasingDupsDriver(dataset, List.of(col("First Name")));
-        dataset1.filter(col("errorTmp").isNotNull()).show();
+        final Dataset<Row> dataset = SparkUtils.obtainDatasetFromInput(file, spark);
+        final Dataset<Row> dataset1 = SparkValidation.erasingDupsDriver(dataset, SparkUtils.listColGenerator(columns));
+        final Dataset<Row> dataset2 = SparkValidation.filterBydDate(dataset1,dateColumn, 1000);
+        dataset2.filter(col("errorTmp").isNotNull()).show(200,false);
         return dataset;
     }
-
-
-
-
-
-
 
 }

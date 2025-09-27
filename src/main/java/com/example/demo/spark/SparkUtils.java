@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.apache.spark.sql.functions.lit;
+
 
 public class SparkUtils {
 
@@ -52,13 +54,19 @@ public class SparkUtils {
             throw new IllegalArgumentException("Formato de archivo no soportado. Solo CSV o Parquet");
         }
         tempFile.deleteOnExit();
-        return dataset;
+        return dataset.withColumn("errorTmp",lit(""))
+                .withColumn("errorDesc",lit(""));
     }
 
 
+    /**
+     * Performs the transformation from List<String> to List<Column>
+     * @param cols - List of string of the columns to transfer
+     * @return The list from columns
+     */
     public static List<Column> listColGenerator(List<String> cols) {
         return cols.stream()
-                .map(org.apache.spark.sql.functions::col)
+                .map(functions::col)
                 .collect(Collectors.toList());
 
     }
