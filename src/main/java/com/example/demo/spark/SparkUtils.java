@@ -45,7 +45,7 @@ public class SparkUtils {
         if (fileName.endsWith(".csv")) {
             dataset = sparkSession.read()
                     .option("header", "true")
-                    .option("inferSchema", "true")
+                    .option("inferSchema", "false")
                     .csv(tempFile.getAbsolutePath());
 
         } else if (fileName.endsWith(".parquet")) {

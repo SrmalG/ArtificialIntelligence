@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-import static org.apache.spark.sql.functions.col;
 
 @Service
 public class SparkServiceImpl implements SparkService {
@@ -24,7 +23,8 @@ public class SparkServiceImpl implements SparkService {
         final Dataset<Row> dataset = SparkUtils.obtainDatasetFromInput(file, spark);
         final Dataset<Row> dataset1 = SparkValidation.erasingDupsDriver(dataset, SparkUtils.listColGenerator(columns));
         final Dataset<Row> dataset2 = SparkValidation.filterBydDate(dataset1,dateColumn, 1000);
-        dataset2.filter(col("errorTmp").isNotNull()).show(200,false);
+        final Dataset<Row> dataset3 = SparkValidation.filterByEmptyFields(dataset2);
+        dataset3.show(100,false);
         return dataset;
     }
 

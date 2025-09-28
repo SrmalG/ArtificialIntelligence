@@ -17,6 +17,12 @@ public class SparkValidation {
 
     private SparkValidation() {}
 
+    /**
+     * Duplicated driver method
+     * @param dataset - dataset to validate
+     * @param columnsToValidate - Columns which are going to be validated
+     * @return the dataset validated
+     */
     public static Dataset<Row> erasingDupsDriver(Dataset<Row> dataset, List<Column> columnsToValidate) {
         return dupsEraser(
                 dataset,
@@ -25,6 +31,13 @@ public class SparkValidation {
                         .toSeq(), columnsToValidate.get(0));
     }
 
+    /**
+     * Method in charge of performing the duplicates validation
+     * @param dataset - The dataset
+     * @param seq - Seq of Columns
+     * @param orderByColumn - The order by Column
+     * @return The dataset validated
+     */
     public static Dataset<Row> dupsEraser(Dataset<Row> dataset, Seq<Column> seq, Column orderByColumn) {
         final Dataset<Row> currentDataset = dataset
                 .withColumn("duplicated", count("*").over(Window.partitionBy(seq)))
@@ -34,14 +47,18 @@ public class SparkValidation {
                 .withColumn("errorTmp", when(col("isDuplicated").$greater(1),lit("-ERROR_ID1")))
                 .withColumn("errorDesc", when(col("errorTmp").equalTo("-ERROR_ID1"), lit("-The row is duplicated")
                 ).otherwise(lit("")));
-        return currentDataset.drop("isDuplicated","duplicated");
+
+        return currentDataset
+                .drop("isDuplicated","duplicated");
     }
 
-    public static Dataset<Row> nullsDataValidate(Dataset<Row> datasetToValidate, List<String> colsToValidate){
-        final List<Column> listOfColumns = SparkUtils.listColGenerator(colsToValidate);
-        return null;
-    }
-
+    /**
+     * Method in charge of Filtering by date, not taking into account outdated rows
+     * @param dataset - The dataset
+     * @param column - Columns where to perform the validation
+     * @param daysToCheck - The days to check
+     * @return The validated dataset.
+     */
     public static Dataset<Row> filterBydDate(Dataset<Row> dataset, String column, Integer daysToCheck) {
         return dataset.withColumn("errorTmp",
                 when(date_sub(current_date(), daysToCheck).gt(col(column)),
@@ -54,19 +71,45 @@ public class SparkValidation {
 
     }
 
+    /**
+     * Method in charge of finding null or empty values in thw row
+     * @param dataset - The datasaet which is going to be validated
+     * @return - The validated dataset
+     */
+    public static Dataset<Row> filterByEmptyFields(Dataset<Row> dataset) {
+        //MOCKED DATA
+        List<String> columns = List.of(
+                "Index",
+                "Customer Id",
+                "First Name",
+                "Last Name",
+                "Company",
+                "City",
+                "Country",
+                "Phone 1",
+                "Phone 2",
+                "Email",
+                "Subscription Date",
+                "Website"
+        );
 
+        Column nullOrEmptyCondition = columns.stream()
+                .map(colName -> col(colName).isNull().or(trim(col(colName)).equalTo("")))
+                .reduce(Column::or)
+                .orElse(lit(false));
 
-//    public static Dataset<Row> filterDataIsNull(Dataset<Row> dataset, List<String> fieldsToValidate) {
-//        List<Column> filters = fieldsToValidate.stream()
-//                .map(columnName -> col(columnName).isNotNull()
-//                        .and(col(columnName).notEqual("")))
-//                .collect(Collectors.toList());
-//
-//        Column combinedFilter = filters.stream().reduce(Column::and)
-//                .orElse(col(String.valueOf(Boolean.TRUE)));
-//
-//        Dataset<Row> result = dataset.filter(combinedFilter);
-//        result.show(false);
-//        return result;
-//    }
+        Dataset<Row> withErrors = dataset.withColumn("errorTmp",
+                when(nullOrEmptyCondition,
+                        when(col("errorTmp").isNotNull(), concat(col("errorTmp"), lit("-ERROR_ID3")))
+                                .otherwise(lit("-ERROR_ID3")))
+                        .otherwise(col("errorTmp"))
+        );
+        withErrors = withErrors.withColumn("errorDesc",
+                when(col("errorDesc").isNotNull().and(col("errorTmp").contains("-ERROR_ID3")),
+                        concat(col("errorDesc"), lit("-There are null or empty fields")))
+                        .when(col("errorTmp").contains("-ERROR_ID3"), lit("There are null or empty fields"))
+                        .otherwise(col("errorDesc"))
+        );
+        return withErrors;
+    }
 }

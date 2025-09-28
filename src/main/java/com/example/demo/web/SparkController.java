@@ -17,8 +17,10 @@ public class SparkController implements SparkApi {
     @Autowired
     private SparkServiceImpl sparkServiceImpl;
 
-    @PostMapping("/upload")
-    public ResponseEntity<String> processFile(@RequestParam("file") MultipartFile file, @RequestParam("columns") List<String> columns, @RequestParam("dateColumn") String dateColumn) {
+    @PostMapping("/preprocess")
+    public ResponseEntity<String> processFile(@RequestParam("file") MultipartFile file,
+                                              @RequestParam("columns") List<String> columns,
+                                              @RequestParam("dateColumn") String dateColumn) {
         try {
             sparkServiceImpl.preprocessingDriver(file, columns, dateColumn);
             return new ResponseEntity<>(HttpStatus.OK);
