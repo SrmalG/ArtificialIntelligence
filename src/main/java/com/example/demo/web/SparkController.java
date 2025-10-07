@@ -1,41 +1,40 @@
 package com.example.demo.web;
 
 import com.example.demo.api.SparkApi;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.demo.service.impl.SparkServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
-import java.io.File;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/spark/v1")
 public class SparkController implements SparkApi {
 
-    private static final String UPLOAD_DIR = "/Users/gorge213/Desktop/TFG/int/src/main/resources/filesUploaded";
+    @Autowired
+    private SparkServiceImpl sparkServiceImpl;
 
-
-    @PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file) {
-        if (file.isEmpty()) {
-            return "El archivo está vacío.";
-        }
+    @PostMapping("/preprocess")
+    public ResponseEntity<String> processFile(@RequestParam("file") MultipartFile file,
+                                              @RequestParam("columns") List<String> columns,
+                                              @RequestParam("dateColumn") String dateColumn) {
         try {
-            File uploadDir = new File(UPLOAD_DIR);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
-
-            File destinationFile = new File(uploadDir, file.getOriginalFilename());
-            file.transferTo(destinationFile);
-
-            return "Archivo subido correctamente: " + destinationFile.getAbsolutePath();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Error al subir el archivo: " + e.getMessage();
+            sparkServiceImpl.preprocessingDriver(file, columns, dateColumn);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity
+                    .internalServerError()
+                    .body(e.getMessage());
         }
     }
+
+
 
 }
