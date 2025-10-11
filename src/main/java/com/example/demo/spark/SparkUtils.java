@@ -16,7 +16,7 @@ public class SparkUtils {
     private SparkUtils() {}
 
     /**
-     * Method in charge of retrieving the SparkSession
+     * Method in charge of retrieving the SparkSession with half of the CPU cores
      * @return The SparkSession
      */
     public static SparkSession getSparkSession() {
@@ -34,7 +34,7 @@ public class SparkUtils {
      * @param file - The file
      * @param sparkSession - The sparkSession
      * @return Dataset
-     * @throws IOException
+     * @throws IOException - Exception Threw
      */
     public static Dataset<Row> obtainDatasetFromInput(final MultipartFile file,final SparkSession sparkSession) throws IOException {
         final File tempFile = File.createTempFile("upload-",
@@ -64,7 +64,7 @@ public class SparkUtils {
      * @param cols - List of string of the columns to transfer
      * @return The list from columns
      */
-    public static List<Column> listColGenerator(List<String> cols) {
+    public static List<Column> listColGenerator(final List<String> cols) {
         return cols.stream()
                 .map(functions::col)
                 .collect(Collectors.toList());

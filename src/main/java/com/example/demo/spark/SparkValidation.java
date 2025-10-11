@@ -78,7 +78,7 @@ public class SparkValidation {
      */
     public static Dataset<Row> filterByEmptyFields(Dataset<Row> dataset) {
         //MOCKED DATA
-        List<String> columns = List.of(
+        final List<String> columns = List.of(
                 "Index",
                 "Customer Id",
                 "First Name",
@@ -93,7 +93,7 @@ public class SparkValidation {
                 "Website"
         );
 
-        Column nullOrEmptyCondition = columns.stream()
+        final Column nullOrEmptyCondition = columns.stream()
                 .map(colName -> col(colName).isNull().or(trim(col(colName)).equalTo("")))
                 .reduce(Column::or)
                 .orElse(lit(false));
