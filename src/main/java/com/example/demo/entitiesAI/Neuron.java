@@ -6,6 +6,7 @@ public class Neuron {
     private double bias;
     private String activationMethod;
     private double target;
+    private double learningRate;
 
     public Neuron() {}
 
@@ -14,13 +15,16 @@ public class Neuron {
         this.weight = new double[dimension];
         this.activationMethod = activationMethod;
         this.bias = 0.5;
+        this.learningRate = 0.015;
     }
 
-    public Neuron(final Integer dimension, final double bias, String activationMethod) {
+    public Neuron(final Integer dimension, final double bias, final String activationMethod, final double learningRate) {
         this.data = new double[dimension];
         this.weight = new double[dimension];
         this.bias = bias;
         this.activationMethod = activationMethod;
+        this.learningRate = learningRate;
+
     }
 
     public double[] getData() {
@@ -62,4 +66,15 @@ public class Neuron {
         this.target = target;
     }
 
+    public void setActivationMethod(String activationMethod) {
+        this.activationMethod = activationMethod;
+    }
+
+    public double getLearningRate() {
+        return learningRate;
+    }
+
+    public void setLearningRate(double learningRate) {
+        this.learningRate = learningRate;
+    }
 }

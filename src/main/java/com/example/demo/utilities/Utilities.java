@@ -1,6 +1,8 @@
 package com.example.demo.utilities;
 
 
+import com.example.demo.entitiesAI.Neuron;
+
 public class Utilities {
 
     private Utilities() {}
@@ -48,7 +50,7 @@ public class Utilities {
      * @param z The input value (typically the result of a linear combination).
      * @return  The sigmoid-activated output.
      */
-    public static Double sigmoidFunction(final Double z) {
+    public static double sigmoidFunction(final double z) {
         return 1 / (1 + Math.exp(-z));
     }
 
@@ -91,8 +93,15 @@ public class Utilities {
      * @param forwardResult the neuron's actual output value (between 0 and 1)
      * @return the computed delta error (δ) for backpropagation
      */
-    public static Double calculateDeltaError(final Double target, final Double forwardResult){
-        return forwardResult-target * forwardResult * (1 - forwardResult);
+    public static double calculateDeltaError(final double target, final double forwardResult){
+        return (forwardResult - target) * forwardResult * (1 - forwardResult);
+    }
+
+    public static void backPropagation(final Neuron neuron, final double deltaError) {
+        for(int i = 0; i < neuron.getWeight().length; ++i) {
+            neuron.getWeight()[i] = neuron.getWeight()[i] - (neuron.getLearningRate() * deltaError * neuron.getData()[i]);
+        }
+        neuron.setBias(neuron.getBias() - neuron.getLearningRate() * deltaError);
     }
 
 }
