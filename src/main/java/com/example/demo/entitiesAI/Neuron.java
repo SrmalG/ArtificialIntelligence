@@ -1,55 +1,65 @@
 package com.example.demo.entitiesAI;
 
 public class Neuron {
-    private Double[] data;
-    private Double[] weight;
-    private Double bias;
-    private String activactionMethod;
+    private double[] data;
+    private double[] weight;
+    private double bias;
+    private String activationMethod;
+    private double target;
 
-    public Neuron() {
-    }
+    public Neuron() {}
 
-    public Neuron(final Integer dimension, String activactionMethod) {
-        this.data = new Double[dimension];
-        this.weight = new Double[dimension];
-        this.activactionMethod = activactionMethod;
+    public Neuron(final Integer dimension, String activationMethod) {
+        this.data = new double[dimension];
+        this.weight = new double[dimension];
+        this.activationMethod = activationMethod;
         this.bias = 0.5;
     }
 
-    public Neuron(final Integer dimension, final Double bias, String activactionMethod) {
-        this.data = new Double[dimension];
-        this.weight = new Double[dimension];
+    public Neuron(final Integer dimension, final double bias, String activationMethod) {
+        this.data = new double[dimension];
+        this.weight = new double[dimension];
         this.bias = bias;
-        this.activactionMethod = activactionMethod;
+        this.activationMethod = activationMethod;
     }
 
-    public Double[] getData() {
+    public double[] getData() {
         return this.data;
     }
 
-    public Double[] getWeight() {
+    public double[] getWeight() {
         return this.weight;
     }
 
-    public Double getBias() {
+    public double getBias() {
         return this.bias;
     }
 
-    public void setData(final Double[] data) {
+    public void setData(final double[] data) {
         this.data = data;
     }
 
-    public void setWeight(final Double[] weight) {
+    public void setWeight(final double[] weight) {
         this.weight = weight;
     }
 
-    public void setBias(final Double bias) {
+    public void setBias(final double bias) {
         this.bias = bias;
     }
 
     public void setActivactionMethod(final String activationMethod){
-        this.activactionMethod = activationMethod;
+        this.activationMethod = activationMethod;
+    }
+    public double getTarget() {
+        return this.target;
     }
 
+    public String getActivationMethod(){
+        return this.activationMethod;
+    }
+
+    public void setTarget(final double target) {
+        this.target = target;
+    }
 
 }

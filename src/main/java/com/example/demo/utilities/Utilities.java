@@ -16,10 +16,10 @@ public class Utilities {
      * @return       The result of the linear combination (z).
      * @throws IllegalArgumentException if data and weight are not the same length or if bias is not valid.
      */
-    public static Double calculateCombination(final Double[] data, final Double[] weight, final Double bias) {
-        validateCombination(data, weight, bias);
+    public static Double calculateCombination(final double[] data, final double[] weight, final double bias) {
+        validateCombination(data, weight);
         double suma = 0.0;
-        for (int i = 0; i < data.length; ++i)
+        for (int i = 0; i < weight.length; ++i)
             suma += data[i] * weight[i];
         return suma + bias;
     }
@@ -30,11 +30,10 @@ public class Utilities {
      *
      * @param data   The input values to validate.
      * @param weight The weights to validate.
-     * @param bias   The bias to validate.
      * @throws IllegalArgumentException if the input is invalid.
      */
-    private static void validateCombination(final Double[] data, final Double[] weight, Double bias) {
-        if (data == null || weight == null || data.length != weight.length || bias == null)
+    private static void validateCombination(final double[] data, final double[] weight) {
+        if (data == null || weight == null || data.length-1 != weight.length)
             throw new IllegalArgumentException("Weight and data must be the same and must be informed");
     }
 
@@ -60,9 +59,40 @@ public class Utilities {
      * @param bias   The bias value of the neuron.
      * @return       The activated output of the neuron, in the range (0, 1).
      */
-    public static Double forward(final Double[] data, final Double[] weight, final Double bias) {
+    public static Double forward(final double[] data, final double[] weight, final double bias,final String activationMode) {
         Double forwardResult = calculateCombination(data,weight,bias);
-        return sigmoidFunction(forwardResult);
+        switch (activationMode.toUpperCase()) {
+            case "SIGMOID" : return sigmoidFunction(forwardResult);
+            default: throw new IllegalArgumentException("Not a valid activation function");
+        }
+    }
+
+    /**
+     * Calculates the delta error (δ) used in the backpropagation process for a neuron.
+     * <p>
+     * This delta represents how much the neuron's output contributed to the total error,
+     * taking into account the derivative of the activation function (sigmoid).
+     * It is used to update the neuron's weights and bias during training.
+     * Here we are using the derivatin of the sigmoid operation
+     * </p>
+     * <p>
+     * Mathematically:
+     * <pre>
+     *     δ = (forwardResult - target) * forwardResult * (1 - forwardResult)
+     * </pre>
+     * where:
+     * <ul>
+     *   <li><b>target</b> — the expected output value (ground truth) from the dataset</li>
+     *   <li><b>forwardResult</b> — the actual output value produced by the neuron after activation</li>
+     * </ul>
+     * </p>
+     *
+     * @param target        the expected output value (typically 0 or 1 in binary classification)
+     * @param forwardResult the neuron's actual output value (between 0 and 1)
+     * @return the computed delta error (δ) for backpropagation
+     */
+    public static Double calculateDeltaError(final Double target, final Double forwardResult){
+        return forwardResult-target * forwardResult * (1 - forwardResult);
     }
 
 }
