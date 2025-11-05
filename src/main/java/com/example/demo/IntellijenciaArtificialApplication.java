@@ -1,9 +1,12 @@
 package com.example.demo;
 
 import com.example.demo.entitiesAI.Neuron;
+import com.example.demo.entitiesAI.NeuronSystemMesh;
 import com.example.demo.utilities.Utilities;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.util.List;
 
 //@SpringBootApplication
 public class IntellijenciaArtificialApplication {
@@ -19,9 +22,16 @@ public class IntellijenciaArtificialApplication {
 		neuron.setWeight(weight);
 		neuron.setTarget(data[data.length-1]);
 		neuron.setActivactionMethod("Sigmoid");
-		Double result = Utilities.forward(neuron.getData(), neuron.getWeight(), neuron.getBias(),neuron.getActivationMethod());
-		System.out.println(result);
+		NeuronSystemMesh mesh = new NeuronSystemMesh();
+		mesh.setNeurons(List.of(neuron));
 
+		//TODO: PRIMERO CLASE RED NEURONAL, NEURONA -> Implementar una malla sin backpropagation -> 1.
+		//TODO: UNA NEURONA SIMPLE -> 2
+		//TODO: REPLICAR EL EEJMPLO DE CLASE QUE ESTA EN LAS TRANSPARENCIAS. -> 3 NEURONAS
+
+		//TODO guardar metadatos sobre la fucnion de pérdida en un fichero por epoch -> batch size
+		//TODO : configurar cuando ajusto los weights, hyper parametris batch size %%==5
+		//TODO DATASET -> entrenamineto -> validación y prueba
+		//TODO: Crear la clase malla donde se recogen las neuronas
 	}
-
 }
