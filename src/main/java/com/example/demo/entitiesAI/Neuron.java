@@ -1,30 +1,34 @@
 package com.example.demo.entitiesAI;
 
+import java.util.List;
+
 public class Neuron {
+    private Integer neuronId;
     private double[] data;
     private double[] weight;
     private double bias;
-    private String activationMethod;
-    private double target;
-    private double learningRate;
+    private List<Integer> connectedTo;
+
+    public List<Integer> getConnectedTo() {
+        return connectedTo;
+    }
+
+    public void setConnectedTo(List<Integer> connectedTo) {
+        this.connectedTo = connectedTo;
+    }
 
     public Neuron() {}
 
-    public Neuron(final Integer dimension, String activationMethod) {
+    public Neuron(final Integer dimension) {
         this.data = new double[dimension];
         this.weight = new double[dimension];
-        this.activationMethod = activationMethod;
         this.bias = 0.5;
-        this.learningRate = 0.015;
     }
 
-    public Neuron(final Integer dimension, final double bias, final String activationMethod, final double learningRate) {
+    public Neuron(final Integer dimension, final double bias) {
         this.data = new double[dimension];
         this.weight = new double[dimension];
         this.bias = bias;
-        this.activationMethod = activationMethod;
-        this.learningRate = learningRate;
-
     }
 
     public double[] getData() {
@@ -51,30 +55,4 @@ public class Neuron {
         this.bias = bias;
     }
 
-    public void setActivactionMethod(final String activationMethod){
-        this.activationMethod = activationMethod;
-    }
-    public double getTarget() {
-        return this.target;
-    }
-
-    public String getActivationMethod(){
-        return this.activationMethod;
-    }
-
-    public void setTarget(final double target) {
-        this.target = target;
-    }
-
-    public void setActivationMethod(String activationMethod) {
-        this.activationMethod = activationMethod;
-    }
-
-    public double getLearningRate() {
-        return learningRate;
-    }
-
-    public void setLearningRate(double learningRate) {
-        this.learningRate = learningRate;
-    }
 }

@@ -8,15 +8,17 @@ import static com.example.demo.utilities.Utilities.sigmoidFunction;
 public class NeuronSystemMesh {
 
     private List<Neuron> neurons;
+    private double learningRate;
+    private String activationMethod;
+    private String target;
 
-
-    //TODO: Revisar como ajusto los pesos y los bias son para cada neurona no por malla
-    public static void backPropagation(final Neuron neuron, final double deltaError) {
-        for(int i = 0; i < neuron.getWeight().length; ++i) {
-            neuron.getWeight()[i] = neuron.getWeight()[i] - (neuron.getLearningRate() * deltaError * neuron.getData()[i]);
-        }
-        neuron.setBias(neuron.getBias() - neuron.getLearningRate() * deltaError);
-    }
+//    //TODO: Revisar como ajusto los pesos y los bias son para cada neurona no por malla
+//    public static void backPropagation(final Neuron neuron, final double deltaError) {
+//        for(int i = 0; i < neuron.getWeight().length; ++i) {
+//            neuron.getWeight()[i] = neuron.getWeight()[i] - (neuron.getLearningRate() * deltaError * neuron.getData()[i]);
+//        }
+//        neuron.setBias(neuron.getBias() - neuron.getLearningRate() * deltaError);
+//    }
     /**
      * Calculates the delta error (δ) used in the backpropagation process for a neuron.
      * <p>
@@ -67,5 +69,33 @@ public class NeuronSystemMesh {
 
     public void setNeurons(List<Neuron> neurons) {
         this.neurons = neurons;
+    }
+
+    public Double forwardsDriver() {
+        return null;
+    }
+
+    public double getLearningRate() {
+        return learningRate;
+    }
+
+    public void setLearningRate(double learningRate) {
+        this.learningRate = learningRate;
+    }
+
+    public String getActivationMethod() {
+        return activationMethod;
+    }
+
+    public void setActivationMethod(String activationMethod) {
+        this.activationMethod = activationMethod;
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
     }
 }

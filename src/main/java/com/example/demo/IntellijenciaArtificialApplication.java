@@ -20,10 +20,13 @@ public class IntellijenciaArtificialApplication {
 		neuron.setBias(bias);
 		neuron.setData(data);
 		neuron.setWeight(weight);
-		neuron.setTarget(data[data.length-1]);
-		neuron.setActivactionMethod("Sigmoid");
+//		neuron.setTarget(data[data.length-1]);
+//		neuron.setActivactionMethod("Sigmoid");
 		NeuronSystemMesh mesh = new NeuronSystemMesh();
 		mesh.setNeurons(List.of(neuron));
+
+
+
 
 		//TODO: PRIMERO CLASE RED NEURONAL, NEURONA -> Implementar una malla sin backpropagation -> 1.
 		//TODO: UNA NEURONA SIMPLE -> 2
@@ -32,6 +35,5 @@ public class IntellijenciaArtificialApplication {
 		//TODO guardar metadatos sobre la fucnion de pérdida en un fichero por epoch -> batch size
 		//TODO : configurar cuando ajusto los weights, hyper parametris batch size %%==5
 		//TODO DATASET -> entrenamineto -> validación y prueba
-		//TODO: Crear la clase malla donde se recogen las neuronas
 	}
 }
