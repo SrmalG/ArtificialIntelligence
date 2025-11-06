@@ -8,6 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.List;
 
+import static com.example.demo.utilities.Utilities.generateMesh;
+
 //@SpringBootApplication
 public class IntellijenciaArtificialApplication {
 
@@ -22,10 +24,7 @@ public class IntellijenciaArtificialApplication {
 		neuron.setWeight(weight);
 //		neuron.setTarget(data[data.length-1]);
 //		neuron.setActivactionMethod("Sigmoid");
-		NeuronSystemMesh mesh = new NeuronSystemMesh();
-		mesh.setNeurons(List.of(neuron));
-
-
+		NeuronSystemMesh mesh = generateMesh();
 
 
 		//TODO: PRIMERO CLASE RED NEURONAL, NEURONA -> Implementar una malla sin backpropagation -> 1.

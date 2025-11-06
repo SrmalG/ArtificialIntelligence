@@ -3,6 +3,7 @@ package com.example.demo.entitiesAI;
 import java.util.List;
 
 public class Neuron {
+
     private Integer neuronId;
     private double[] data;
     private double[] weight;
@@ -23,6 +24,14 @@ public class Neuron {
         this.data = new double[dimension];
         this.weight = new double[dimension];
         this.bias = 0.5;
+    }
+
+    public Integer getNeuronId() {
+        return neuronId;
+    }
+
+    public void setNeuronId(Integer neuronId) {
+        this.neuronId = neuronId;
     }
 
     public Neuron(final Integer dimension, final double bias) {

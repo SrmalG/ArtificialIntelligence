@@ -2,6 +2,9 @@ package com.example.demo.utilities;
 
 
 import com.example.demo.entitiesAI.Neuron;
+import com.example.demo.entitiesAI.NeuronSystemMesh;
+
+import java.util.ArrayList;
 
 public class Utilities {
 
@@ -52,6 +55,24 @@ public class Utilities {
      */
     public static double sigmoidFunction(final double z) {
         return 1 / (1 + Math.exp(-z));
+    }
+
+    public static NeuronSystemMesh generateMesh() {
+        NeuronSystemMesh mesh = new NeuronSystemMesh();
+        ArrayList<Neuron> neuronas = new ArrayList<>(10);
+        Neuron neuron = new Neuron();
+        neuron.setNeuronId(0);
+        neuron.setConnectedTo(null);
+        neuron.setBias(.4);
+        double[] data = {1.0, 0.0, 1.0};
+        double[] weight = {0.8, -0.5};
+        double bias = 1.0;
+        neuron.setBias(bias);
+        neuron.setData(data);
+        neuron.setWeight(weight);
+        neuronas.add(neuron);
+        mesh.setNeurons(neuronas);
+        return mesh;
     }
 
 

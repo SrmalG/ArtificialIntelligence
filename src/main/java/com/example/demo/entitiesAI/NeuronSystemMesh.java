@@ -1,5 +1,6 @@
 package com.example.demo.entitiesAI;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.demo.utilities.Utilities.calculateCombination;
@@ -7,7 +8,7 @@ import static com.example.demo.utilities.Utilities.sigmoidFunction;
 
 public class NeuronSystemMesh {
 
-    private List<Neuron> neurons;
+    private ArrayList<Neuron> neurons;
     private double learningRate;
     private String activationMethod;
     private String target;
@@ -67,7 +68,7 @@ public class NeuronSystemMesh {
         return neurons;
     }
 
-    public void setNeurons(List<Neuron> neurons) {
+    public void setNeurons(ArrayList<Neuron> neurons) {
         this.neurons = neurons;
     }
 
