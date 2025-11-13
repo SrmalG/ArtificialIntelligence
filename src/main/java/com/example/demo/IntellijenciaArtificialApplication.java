@@ -5,9 +5,7 @@ import com.example.demo.entitiesAI.NeuronSystemMesh;
 import com.example.demo.utilities.Utilities;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import java.util.List;
-
 import static com.example.demo.utilities.Utilities.generateMesh;
 
 //@SpringBootApplication
@@ -26,13 +24,18 @@ public class IntellijenciaArtificialApplication {
 //		neuron.setActivactionMethod("Sigmoid");
 		NeuronSystemMesh mesh = generateMesh();
 
+		//EJEMPLO A MANO -> Aprendizaje -> replicando -> Single layer -> adapter linear neuron -> Mostrar un ejemplo
+
+		// MPL -> forward
 
 		//TODO: PRIMERO CLASE RED NEURONAL, NEURONA -> Implementar una malla sin backpropagation -> 1.
+
 		//TODO: UNA NEURONA SIMPLE -> 2
 		//TODO: REPLICAR EL EEJMPLO DE CLASE QUE ESTA EN LAS TRANSPARENCIAS. -> 3 NEURONAS
-
 		//TODO guardar metadatos sobre la fucnion de pérdida en un fichero por epoch -> batch size
 		//TODO : configurar cuando ajusto los weights, hyper parametris batch size %%==5
 		//TODO DATASET -> entrenamineto -> validación y prueba
 	}
+
+	//página 391 -> 393 -> 403 -> cálculo matricial la parte del forward -> Nada de picar y entender
 }
