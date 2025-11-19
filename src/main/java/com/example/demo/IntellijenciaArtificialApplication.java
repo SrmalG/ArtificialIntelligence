@@ -13,7 +13,6 @@ public class IntellijenciaArtificialApplication {
 	public static void main(String[] args) {
 		//SpringApplication.run(IntellijenciaArtificialApplication.class, args);
         NeuronalNetwork net = NeuronalNetwork.getInstance();
-
         NeuronLayer hiddenLayer = new NeuronLayer();
 
         Neuron h1 = new Neuron(2,.2);
@@ -25,26 +24,20 @@ public class IntellijenciaArtificialApplication {
         hiddenLayer.addNeuron(h1);
         hiddenLayer.addNeuron(h2);
 
-        // === Capa de salida (1 neurona, 2 entradas desde la capa oculta) ===
         NeuronLayer outputLayer = new NeuronLayer();
-
         Neuron out = new Neuron(2,.3);
         out.setWeight(new double[]{0.7, -0.5});
         out.setBias(0.3);
 
         outputLayer.addNeuron(out);
 
-        // === Agregar capas a la red ===
         net.addLayer(hiddenLayer);
         net.addLayer(outputLayer);
 
-        // === Datos de entrada ===
         double[] input = {0.6, 0.9};
 
-        // === Forward completo ===
         double[] output = net.forward(input);
 
-        // === Resultado final ===
         System.out.println("Salida final de la red: " + output[0]);
 
 

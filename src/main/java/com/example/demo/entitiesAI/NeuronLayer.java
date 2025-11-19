@@ -2,6 +2,7 @@ package com.example.demo.entitiesAI;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static com.example.demo.utilities.Utilities.calculateCombination;
 import static com.example.demo.utilities.Utilities.sigmoidFunction;
@@ -19,15 +20,18 @@ public class NeuronLayer {
     }
 
     /**
-     * Ejecuta el forward de toda la capa.
-     * Toma las entradas, las pasa por cada neurona y devuelve las salidas.
+     * Ejecuta el forward de toda la capa en paralelo.
      */
     public double[] forwardLayer(double[] inputs) {
-        double[] outputs = new double[neurons.size()];
-        for (int i = 0; i < neurons.size(); i++) {
+        int size = neurons.size();
+        double[] outputs = new double[size];
+
+        // Parallel stream para ejecutar cada neurona en un hilo diferente
+        IntStream.range(0, size).parallel().forEach(i -> {
             Neuron n = neurons.get(i);
             outputs[i] = forward(inputs, n.getWeight(), n.getBias(), activationMethod);
-        }
+        });
+
         return outputs;
     }
 
