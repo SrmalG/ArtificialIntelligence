@@ -22,14 +22,17 @@ public class NeuronLayer {
     /**
      * Ejecuta el forward de toda la capa en paralelo.
      */
-    public double[] forwardLayer(double[] inputs) {
-        int size = neurons.size();
-        double[] outputs = new double[size];
+    public double[] forwardLayer(final double[] inputs) {
+        final int size = neurons.size();
+        final double[] outputs = new double[size];
 
-        // Parallel stream para ejecutar cada neurona en un hilo diferente
         IntStream.range(0, size).parallel().forEach(i -> {
-            Neuron n = neurons.get(i);
-            outputs[i] = forward(inputs, n.getWeight(), n.getBias(), activationMethod);
+            final Neuron n = neurons.get(i);
+            final double linealCombination = calculateCombination(inputs, n.getWeight(), n.getBias());
+            outputs[i] = forward(linealCombination, activationMethod);
+            n.setLastOutput(outputs[i]);
+            n.setLastCombinationCalculation(linealCombination);
+            n.setLastInput(inputs);
         });
 
         return outputs;
@@ -38,8 +41,7 @@ public class NeuronLayer {
     /**
      * Calcula la salida de una neurona individual.
      */
-    public static double forward(final double[] data, final double[] weight, final double bias, final String activationMode) {
-        double combination = calculateCombination(data, weight, bias);
+    public static double forward(final double combination,final String activationMode) {
         switch (activationMode.toUpperCase()) {
             case "SIGMOID":
                 return sigmoidFunction(combination);

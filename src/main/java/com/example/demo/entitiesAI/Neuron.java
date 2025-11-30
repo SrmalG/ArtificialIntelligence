@@ -1,11 +1,36 @@
 package com.example.demo.entitiesAI;
 
-import java.util.List;
-
 public class Neuron {
 
     private double[] weight;
     private double bias;
+    private double[] lastInput;
+    private double lastOutput;
+    private double lastCombinationCalculation;
+
+    public double getLastCombinationCalculation() {
+        return lastCombinationCalculation;
+    }
+
+    public void setLastCombinationCalculation(double lastCombinationCalculation) {
+        this.lastCombinationCalculation = lastCombinationCalculation;
+    }
+
+    public double[] getLastInput() {
+        return lastInput;
+    }
+
+    public void setLastInput(double[] lastInput) {
+        this.lastInput = lastInput;
+    }
+
+    public double getLastOutput() {
+        return lastOutput;
+    }
+
+    public void setLastOutput(double lastOutput) {
+        this.lastOutput = lastOutput;
+    }
 
     public Neuron() {}
 
@@ -17,6 +42,7 @@ public class Neuron {
     public Neuron(final Integer dimension, final double bias) {
         this.weight = new double[dimension];
         this.bias = bias;
+        this.lastInput = new double[dimension];
     }
 
     public double[] getWeight() {

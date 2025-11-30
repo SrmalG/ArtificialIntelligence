@@ -64,6 +64,8 @@ public class IntellijenciaArtificialApplication {
         System.out.println("Error: " + deltaError);
 
 
+
+
 		//EJEMPLO A MANO -> Aprendizaje -> replicando -> Single layer -> adapter linear neuron -> Mostrar un ejemplo
 
 		// MPL -> forward
