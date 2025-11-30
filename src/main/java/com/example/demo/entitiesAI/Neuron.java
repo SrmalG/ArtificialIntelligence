@@ -4,40 +4,19 @@ import java.util.List;
 
 public class Neuron {
 
-    private Integer neuronId;
-    private double[] data;
     private double[] weight;
     private double bias;
-    private List<Integer> connectedTo;
 
     public Neuron() {}
 
     public Neuron(final Integer dimension) {
-        this.data = new double[dimension];
         this.weight = new double[dimension];
         this.bias = 0.5;
     }
 
     public Neuron(final Integer dimension, final double bias) {
-        this.data = new double[dimension];
         this.weight = new double[dimension];
         this.bias = bias;
-    }
-
-    public Integer getNeuronId() {
-        return neuronId;
-    }
-
-    public void setNeuronId(Integer neuronId) {
-        this.neuronId = neuronId;
-    }
-
-    public double[] getData() {
-        return this.data;
-    }
-
-    public void setData(final double[] data) {
-        this.data = data;
     }
 
     public double[] getWeight() {
@@ -56,11 +35,4 @@ public class Neuron {
         this.bias = bias;
     }
 
-    public List<Integer> getConnectedTo() {
-        return connectedTo;
-    }
-
-    public void setConnectedTo(List<Integer> connectedTo) {
-        this.connectedTo = connectedTo;
-    }
 }
