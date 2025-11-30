@@ -27,7 +27,7 @@ public class NeuronLayer {
         double[] outputs = new double[size];
 
         // Parallel stream para ejecutar cada neurona en un hilo diferente
-        IntStream.range(0, size).parallel().forEach(i -> {
+        IntStream.range(0, size).forEach(i -> {
             Neuron n = neurons.get(i);
             outputs[i] = forward(inputs, n.getWeight(), n.getBias(), activationMethod);
         });

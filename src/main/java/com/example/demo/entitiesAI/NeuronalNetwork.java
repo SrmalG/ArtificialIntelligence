@@ -47,11 +47,11 @@ public class NeuronalNetwork {
      * Ejecuta un forward completo de la red, capa por capa.
      * Cada capa toma la salida de la anterior como entrada.
      */
-    public double[] forward(double[] inputs) {
+    public double forward(double[] inputs) {
         double[] output = inputs;
         for (NeuronLayer layer : neuronalNetwork) {
             output = layer.forwardLayer(output);
         }
-        return output;
+        return output[0];
     }
 }
