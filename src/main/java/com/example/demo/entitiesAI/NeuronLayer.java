@@ -19,6 +19,19 @@ public class NeuronLayer {
         this.activationMethod = "SIGMOID";
     }
 
+    public NeuronLayer(final double learningRate) {
+        this.neurons = new ArrayList<>();
+        this.learningRate = learningRate;
+        this.activationMethod = "SIGMOID";
+    }
+
+    public NeuronLayer(final double learningRate, final String activationMethod) {
+        this.neurons = new ArrayList<>();
+        this.learningRate = learningRate;
+        this.activationMethod = activationMethod;
+    }
+
+
     /**
      * Ejecuta el forward de toda la capa en paralelo.
      */

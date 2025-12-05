@@ -1,5 +1,7 @@
 package com.example.demo.entitiesAI;
 
+import java.util.Arrays;
+
 public class Neuron {
 
     private double[] weight;
@@ -61,4 +63,14 @@ public class Neuron {
         this.bias = bias;
     }
 
+    @Override
+    public String toString() {
+        return "Neuron{" +
+                "weight=" + Arrays.toString(weight) +
+                ", bias=" + bias +
+                ", lastInput=" + Arrays.toString(lastInput) +
+                ", lastOutput=" + lastOutput +
+                ", lastCombinationCalculation=" + lastCombinationCalculation +
+                '}';
+    }
 }

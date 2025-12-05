@@ -14,17 +14,19 @@ public class IntellijenciaArtificialApplication {
 
 	public static void main(String[] args) {
 		//SpringApplication.run(IntellijenciaArtificialApplication.class, args);
-        double target = .9;
-        NeuronalNetwork net = NeuronalNetwork.getInstance();
+        final double target = .9;
+        final double[] input = {0.6, 0.9};
+
+            NeuronalNetwork net = NeuronalNetwork.getInstance();
         NeuronLayer hiddenLayer = new NeuronLayer();
 
-        Neuron h1 = new Neuron(2,.2);
+        Neuron h1 = new Neuron(input.length,.2);
         h1.setWeight(new double[]{0.8, -0.4});
 
-        Neuron h2 = new Neuron(2,-.1);
+        Neuron h2 = new Neuron(input.length,-.1);
         h2.setWeight(new double[]{0.3, 0.9});
 
-        Neuron h3 = new Neuron(2,.8);
+        Neuron h3 = new Neuron(input.length,.8);
         h3.setWeight(new double[]{0.1, 0.1});
 
         hiddenLayer.addNeuron(h1);
@@ -45,7 +47,6 @@ public class IntellijenciaArtificialApplication {
         NeuronLayer realOutputLayer = new NeuronLayer();
         Neuron realOut = new Neuron(outputLayer.getNeurons().size(),.3);
         realOut.setWeight(new double[]{0.2, -0.3});
-
         realOutputLayer.addNeuron(realOut);
 
 
@@ -53,15 +54,15 @@ public class IntellijenciaArtificialApplication {
         net.addLayer(outputLayer);
         net.addLayer(realOutputLayer);
 
-        double[] input = {0.6, 0.9};
 
         double output = net.forward(input);
-
         double deltaError = calculateDeltaError(target,output);
 
         System.out.println("Salida final de la red: " + output);
 
         System.out.println("Error: " + deltaError);
+
+        System.out.println(h1.toString());
 
 
 
