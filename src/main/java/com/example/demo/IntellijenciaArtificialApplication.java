@@ -4,9 +4,7 @@ import com.example.demo.entitiesAI.Neuron;
 import com.example.demo.entitiesAI.NeuronLayer;
 import com.example.demo.entitiesAI.NeuronalNetwork;
 
-import java.util.List;
-
-import static com.example.demo.entitiesAI.NeuronLayer.calculateDeltaError;
+import static com.example.demo.utilities.Utilities.calculateDeltaErrorLastLayer;
 
 
 //@SpringBootApplication
@@ -14,68 +12,44 @@ public class IntellijenciaArtificialApplication {
 
 	public static void main(String[] args) {
 		//SpringApplication.run(IntellijenciaArtificialApplication.class, args);
-        final double target = .9;
-        final double[] input = {0.6, 0.9};
+        final double target = 1;
+        final double[] input = {1, 0};
 
-            NeuronalNetwork net = NeuronalNetwork.getInstance();
+        NeuronalNetwork net = NeuronalNetwork.getInstance();
         NeuronLayer hiddenLayer = new NeuronLayer();
 
-        Neuron h1 = new Neuron(input.length,.2);
-        h1.setWeight(new double[]{0.8, -0.4});
+        Neuron h1 = new Neuron(input.length,.3);
+        h1.setWeight(new double[]{0.6, -0.1});
 
-        Neuron h2 = new Neuron(input.length,-.1);
-        h2.setWeight(new double[]{0.3, 0.9});
-
-        Neuron h3 = new Neuron(input.length,.8);
-        h3.setWeight(new double[]{0.1, 0.1});
+        Neuron h2 = new Neuron(input.length,.5);
+        h2.setWeight(new double[]{-0.3, 0.4});
 
         hiddenLayer.addNeuron(h1);
         hiddenLayer.addNeuron(h2);
-        hiddenLayer.addNeuron(h3);
+
 
         NeuronLayer outputLayer = new NeuronLayer();
-        Neuron out = new Neuron(hiddenLayer.getNeurons().size(),.3);
-        out.setWeight(new double[]{0.7, -0.5, 0.2});
-        Neuron out2 = new Neuron(hiddenLayer.getNeurons().size(),.3);
-        out2.setWeight(new double[]{0.9, 0.5, 0.2});
-
+        Neuron out = new Neuron(hiddenLayer.getNeurons().size(),-.2);
+        out.setWeight(new double[]{0.1, 0.4});
 
         outputLayer.addNeuron(out);
-        outputLayer.addNeuron(out2);
-
-
-        NeuronLayer realOutputLayer = new NeuronLayer();
-        Neuron realOut = new Neuron(outputLayer.getNeurons().size(),.3);
-        realOut.setWeight(new double[]{0.2, -0.3});
-        realOutputLayer.addNeuron(realOut);
-
 
         net.addLayer(hiddenLayer);
         net.addLayer(outputLayer);
-        net.addLayer(realOutputLayer);
 
 
         double output = net.forward(input);
-        double deltaError = calculateDeltaError(target,output);
+        double deltaError = calculateDeltaErrorLastLayer(target,output);
+        out.setDeltaError(deltaError);
+        System.out.println(out);
 
-        System.out.println("Salida final de la red: " + output);
-
-        System.out.println("Error: " + deltaError);
-
-        System.out.println(h1.toString());
-
-
-
-
+        net.putDeltas(new double[]{1.0});
+        System.out.println(h2);
+        System.out.println(h1);
 		//EJEMPLO A MANO -> Aprendizaje -> replicando -> Single layer -> adapter linear neuron -> Mostrar un ejemplo
 
-		// MPL -> forward
 
 
-
-		//TODO: PRIMERO CLASE RED NEURONAL, NEURONA -> Implementar una malla sin backpropagation -> 1.
-
-		//TODO: UNA NEURONA SIMPLE -> 2
 		//TODO: REPLICAR EL EEJMPLO DE CLASE QUE ESTA EN LAS TRANSPARENCIAS. -> 3 NEURONAS
 		//TODO guardar metadatos sobre la fucnion de pérdida en un fichero por epoch -> batch size
 		//TODO : configurar cuando ajusto los weights, hyper parametris batch size %%==5

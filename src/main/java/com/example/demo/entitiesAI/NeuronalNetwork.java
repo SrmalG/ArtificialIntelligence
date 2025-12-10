@@ -54,4 +54,28 @@ public class NeuronalNetwork {
         }
         return output[0];
     }
+
+    /**
+     * Calcula los deltas de toda la red.
+     *
+     * @param target array con los valores esperados de la última capa
+     */
+    public void putDeltas(double[] target) {
+        if (neuronalNetwork.isEmpty()) return;
+
+        NeuronLayer outputLayer = neuronalNetwork.get(neuronalNetwork.size() - 1);
+        for (int i = 0; i < outputLayer.getNeurons().size(); i++) {
+            Neuron n = outputLayer.getNeurons().get(i);
+            double y = n.getLastOutput();      // salida de la neurona
+            double t = target[i];              // valor objetivo
+            double delta = (y - t) * y * (1 - y);  // sigmoide + MSE
+            n.setDeltaError(delta);
+        }
+
+        for (int i = neuronalNetwork.size() - 2; i >= 0; i--) {
+            NeuronLayer currentLayer = neuronalNetwork.get(i);
+            NeuronLayer nextLayer = neuronalNetwork.get(i + 1);
+            currentLayer.calculateDeltasFromNextLayer(nextLayer);
+        }
+    }
 }

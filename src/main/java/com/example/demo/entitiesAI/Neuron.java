@@ -9,6 +9,15 @@ public class Neuron {
     private double[] lastInput;
     private double lastOutput;
     private double lastCombinationCalculation;
+    private double deltaError;
+
+    public double getDeltaError() {
+        return deltaError;
+    }
+
+    public void setDeltaError(double deltaError) {
+        this.deltaError = deltaError;
+    }
 
     public double getLastCombinationCalculation() {
         return lastCombinationCalculation;
@@ -71,6 +80,7 @@ public class Neuron {
                 ", lastInput=" + Arrays.toString(lastInput) +
                 ", lastOutput=" + lastOutput +
                 ", lastCombinationCalculation=" + lastCombinationCalculation +
+                ", deltaError=" + deltaError +
                 '}';
     }
 }

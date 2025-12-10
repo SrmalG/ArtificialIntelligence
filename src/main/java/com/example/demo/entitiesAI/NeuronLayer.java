@@ -1,5 +1,7 @@
 package com.example.demo.entitiesAI;
 
+import com.example.demo.utilities.Utilities;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -54,7 +56,7 @@ public class NeuronLayer {
     /**
      * Calcula la salida de una neurona individual.
      */
-    public static double forward(final double combination,final String activationMode) {
+    public double forward(final double combination, final String activationMode) {
         switch (activationMode.toUpperCase()) {
             case "SIGMOID":
                 return sigmoidFunction(combination);
@@ -63,12 +65,20 @@ public class NeuronLayer {
         }
     }
 
-    /**
-     * Calcula el error delta (para backpropagation futuro)
-     */
-    public static double calculateDeltaError(final double target, final double forwardResult) {
-        return (forwardResult - target) * forwardResult * (1 - forwardResult);
+    public void calculateDeltasFromNextLayer(final NeuronLayer nextLayer) {
+        for (int j = 0; j < neurons.size(); j++) {
+            Neuron current = neurons.get(j);
+            double sum = 0.0;
+            for (int k = 0; k < nextLayer.neurons.size(); k++) {
+                Neuron next = nextLayer.neurons.get(k);
+                sum += next.getDeltaError() * next.getWeight()[j];
+            }
+            double out = current.getLastOutput();
+            double derivative = out * (1 - out);
+            current.setDeltaError(sum * derivative);
+        }
     }
+
 
     // Getters & Setters
     public List<Neuron> getNeurons() {
