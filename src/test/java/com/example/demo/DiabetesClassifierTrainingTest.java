@@ -9,11 +9,6 @@ import static org.junit.Assert.*;
 
 /**
  * Synthetic diabetes-like classifier test.
- *
- * IMPORTANT:
- * - This is NOT a medical model.
- * - It's a sanity test that the 3-input NN can learn a simple rule.
- *
  * We use 3 normalized inputs in [0,1] representing (example):
  *  - x1: fasting glucose (normalized)
  *  - x2: BMI (normalized)
@@ -58,7 +53,7 @@ public class DiabetesClassifierTrainingTest {
         };
 
         final NeuronalNetwork net = NeuronalNetwork.getInstance();
-    net.clear();
+        net.clear();
 
         // 3 -> 4 -> 1 network
         final NeuronLayer hidden = new NeuronLayer(0.4);
