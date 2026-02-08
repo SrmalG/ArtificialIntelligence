@@ -17,30 +17,15 @@ public class NeuronalNetwork {
         }
         return instance;
     }
-
-    public ArrayList<NeuronLayer> getNeuronalNetwork() {
-        return neuronalNetwork;
-    }
-
-    public void setNeuronalNetwork(ArrayList<NeuronLayer> neuronalNetwork) {
-        this.neuronalNetwork = neuronalNetwork;
-    }
-
     public void addLayer(final NeuronLayer layer) {
         neuronalNetwork.add(layer);
     }
 
     /**
-     * Genera una red neuronal con N capas vacías.
+     * Clears all layers. Useful for tests and for rebuilding a model.
      */
-    public NeuronalNetwork generateNeuronalNetwork(int numberOfLayers) {
-        if (this.neuronalNetwork == null || this.neuronalNetwork.isEmpty()) {
-            this.neuronalNetwork = new ArrayList<>();
-            for (int i = 0; i < numberOfLayers; i++) {
-                this.neuronalNetwork.add(new NeuronLayer());
-            }
-        }
-        return this;
+    public void clear() {
+        neuronalNetwork.clear();
     }
 
     /**
@@ -56,19 +41,68 @@ public class NeuronalNetwork {
     }
 
     /**
+     * Forward pass returning the full last-layer output vector.
+     */
+    public double[] forwardVector(double[] inputs) {
+        double[] output = inputs;
+        for (NeuronLayer layer : neuronalNetwork) {
+            output = layer.forwardLayer(output);
+        }
+        return output;
+    }
+
+    /**
+     * Trains the network with simple stochastic gradient descent.
+     *
+     * Contract:
+     * - inputs: shape [nSamples][nFeatures]
+     * - targets: shape [nSamples][nOutputs] (must match output layer size)
+     */
+    public void train(double[][] inputs, double[][] targets, int epochs) {
+        if (inputs == null || targets == null) {
+            throw new IllegalArgumentException("inputs and targets must not be null");
+        }
+        if (inputs.length != targets.length) {
+            throw new IllegalArgumentException("inputs and targets must have the same number of samples");
+        }
+        if (neuronalNetwork.isEmpty()) {
+            throw new IllegalStateException("Network has no layers");
+        }
+        if (epochs < 1) {
+            throw new IllegalArgumentException("epochs must be >= 1");
+        }
+
+        for (int epoch = 0; epoch < epochs; epoch++) {
+            for (int i = 0; i < inputs.length; i++) {
+                forwardVector(inputs[i]);
+                putDeltas(targets[i]);
+                for (NeuronLayer layer : neuronalNetwork) {
+                    layer.applyGradients();
+                }
+            }
+        }
+    }
+
+    /**
      * Calcula los deltas de toda la red.
      *
      * @param target array con los valores esperados de la última capa
      */
     public void putDeltas(double[] target) {
-        if (neuronalNetwork.isEmpty()) return;
+        if (neuronalNetwork.isEmpty()) {
+            return;
+        }
+        if (target == null) {
+            throw new IllegalArgumentException("target must not be null");
+        }
 
         NeuronLayer outputLayer = neuronalNetwork.get(neuronalNetwork.size() - 1);
+
         for (int i = 0; i < outputLayer.getNeurons().size(); i++) {
             Neuron n = outputLayer.getNeurons().get(i);
-            double y = n.getLastOutput();      // salida de la neurona
-            double t = target[i];              // valor objetivo
-            double delta = (y - t) * y * (1 - y);  // sigmoide + MSE
+            double y = n.getLastOutput();
+            double t = target[i];
+            double delta = (y - t) * y * (1 - y);
             n.setDeltaError(delta);
         }
 

@@ -1,6 +1,4 @@
 package com.example.demo.web;
-
-import com.example.demo.api.SparkApi;
 import com.example.demo.service.impl.SparkServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/spark/v1")
-public class SparkController implements SparkApi {
+public class SparkController {
 
     @Autowired
     private SparkServiceImpl sparkServiceImpl;

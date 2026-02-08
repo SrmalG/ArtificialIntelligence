@@ -8,7 +8,6 @@ public class Neuron {
     private double bias;
     private double[] lastInput;
     private double lastOutput;
-    private double lastCombinationCalculation;
     private double deltaError;
 
     public double getDeltaError() {
@@ -17,14 +16,6 @@ public class Neuron {
 
     public void setDeltaError(double deltaError) {
         this.deltaError = deltaError;
-    }
-
-    public double getLastCombinationCalculation() {
-        return lastCombinationCalculation;
-    }
-
-    public void setLastCombinationCalculation(double lastCombinationCalculation) {
-        this.lastCombinationCalculation = lastCombinationCalculation;
     }
 
     public double[] getLastInput() {
@@ -41,13 +32,6 @@ public class Neuron {
 
     public void setLastOutput(double lastOutput) {
         this.lastOutput = lastOutput;
-    }
-
-    public Neuron() {}
-
-    public Neuron(final Integer dimension) {
-        this.weight = new double[dimension];
-        this.bias = 0.5;
     }
 
     public Neuron(final Integer dimension, final double bias) {
@@ -79,7 +63,6 @@ public class Neuron {
                 ", bias=" + bias +
                 ", lastInput=" + Arrays.toString(lastInput) +
                 ", lastOutput=" + lastOutput +
-                ", lastCombinationCalculation=" + lastCombinationCalculation +
                 ", deltaError=" + deltaError +
                 '}';
     }

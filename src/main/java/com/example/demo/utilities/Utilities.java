@@ -18,6 +18,12 @@ public class Utilities {
      * @since 1.0
      */
     public static double calculateCombination(final double[] data, final double[] weight, final double bias) {
+        if (data == null || weight == null) {
+            throw new IllegalArgumentException("data and weight must not be null");
+        }
+        if (data.length != weight.length) {
+            throw new IllegalArgumentException("data and weight must have the same length");
+        }
         double suma = 0.0;
         for (int i = 0; i < weight.length; ++i)
             suma += data[i] * weight[i];
@@ -37,7 +43,13 @@ public class Utilities {
      * @return  The sigmoid-activated output.
      */
     public static double sigmoidFunction(final double z) {
-        return 1 / (1 + Math.exp(-z));
+        // Numerically stable sigmoid to avoid overflow for large |z|
+        if (z >= 0) {
+            final double expNeg = Math.exp(-z);
+            return 1.0 / (1.0 + expNeg);
+        }
+        final double expPos = Math.exp(z);
+        return expPos / (1.0 + expPos);
     }
 
     /**
