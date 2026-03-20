@@ -43,7 +43,6 @@ public class Utilities {
      * @return  The sigmoid-activated output.
      */
     public static double sigmoidFunction(final double z) {
-        // Numerically stable sigmoid to avoid overflow for large |z|
         if (z >= 0) {
             final double expNeg = Math.exp(-z);
             return 1.0 / (1.0 + expNeg);

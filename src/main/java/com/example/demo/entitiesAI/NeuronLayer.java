@@ -72,7 +72,6 @@ public class NeuronLayer {
         }
     }
 
-
     // Getters & Setters
     public List<Neuron> getNeurons() {
         return neurons;

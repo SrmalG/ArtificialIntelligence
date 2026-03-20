@@ -23,9 +23,7 @@ public class SparkServiceImpl implements SparkService {
         final Dataset<Row> dataset = SparkUtils.obtainDatasetFromInput(file, spark);
         final Dataset<Row> dataset1 = SparkValidation.erasingDupsDriver(dataset, SparkUtils.listColGenerator(columns));
         final Dataset<Row> dataset2 = SparkValidation.filterBydDate(dataset1,dateColumn, 1000);
-        final Dataset<Row> dataset3 = SparkValidation.filterByEmptyFields(dataset2);
-        dataset3.show(100,false);
-        return dataset;
+        return SparkValidation.filterByEmptyFields(dataset2);
     }
 
 }

@@ -99,7 +99,7 @@ public class NeuronalNetwork {
         NeuronLayer outputLayer = neuronalNetwork.get(neuronalNetwork.size() - 1);
 
         for (int i = 0; i < outputLayer.getNeurons().size(); i++) {
-            Neuron n = outputLayer.getNeurons().get(i);
+            final Neuron n = outputLayer.getNeurons().get(i);
             double y = n.getLastOutput();
             double t = target[i];
             double delta = (y - t) * y * (1 - y);
@@ -107,8 +107,8 @@ public class NeuronalNetwork {
         }
 
         for (int i = neuronalNetwork.size() - 2; i >= 0; i--) {
-            NeuronLayer currentLayer = neuronalNetwork.get(i);
-            NeuronLayer nextLayer = neuronalNetwork.get(i + 1);
+            final NeuronLayer currentLayer = neuronalNetwork.get(i);
+            final NeuronLayer nextLayer = neuronalNetwork.get(i + 1);
             currentLayer.calculateDeltasFromNextLayer(nextLayer);
         }
     }
