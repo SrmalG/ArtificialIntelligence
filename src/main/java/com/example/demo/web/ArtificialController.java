@@ -1,5 +1,6 @@
 package com.example.demo.web;
 
+import com.example.demo.dto.GenericResponse;
 import com.example.demo.dto.SimpleCalculation;
 import com.example.demo.dto.TrainModelDto;
 import com.example.demo.service.FNNArtificialEngineService;
@@ -21,34 +22,34 @@ public class ArtificialController {
     private FNNArtificialEngineService model;
 
     @PostMapping("/train")
-    public ResponseEntity<String> processFile(@RequestBody TrainModelDto data) {
+    public ResponseEntity<GenericResponse> processFile(@Valid @RequestBody TrainModelDto data) {
         try {
             model.trainFNN(data.getData(), data.getTarget(), data.getEpocs());
-            return new ResponseEntity<>("ok on training",HttpStatus.OK);
+            return ResponseEntity.ok().body(new GenericResponse(true, "Train completed"));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(e.getMessage());
+                    .body(new GenericResponse(false,e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity
                     .internalServerError()
-                    .body(e.getMessage());
+                    .body(new GenericResponse(false,e.getMessage()));
         }
     }
 
     @PostMapping("/calculate")
-    public ResponseEntity<String> calculate(@RequestBody SimpleCalculation data) {
+    public ResponseEntity<GenericResponse> calculate(@Valid @RequestBody SimpleCalculation data) {
         try {
             double result = model.calculate(data.getInput());
-            return new ResponseEntity<>(String.format("The result of the result is: %s", result), HttpStatus.OK);
+            return ResponseEntity.ok().body(new GenericResponse(true, String.format("The result of the result is: %s", result)));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(e.getMessage());
+                    .body(new GenericResponse(false,e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity
                     .internalServerError()
-                    .body(e.getMessage());
+                    .body(new GenericResponse(false,e.getMessage()));
         }
     }
 }

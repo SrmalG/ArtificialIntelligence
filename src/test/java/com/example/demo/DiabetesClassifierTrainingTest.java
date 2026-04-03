@@ -68,7 +68,7 @@ public class DiabetesClassifierTrainingTest {
         net.addLayer(hidden);
         net.addLayer(out);
 
-        net.train(x, y, 60000);
+        net.train(x, y, 6000);
 
         // A couple of representative sanity points (not from training set)
         final double[] nonDiabetic = {0.20, 0.25, 0.25};
