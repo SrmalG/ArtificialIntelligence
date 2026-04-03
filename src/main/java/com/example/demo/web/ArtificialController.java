@@ -5,7 +5,6 @@ import com.example.demo.dto.SimpleCalculation;
 import com.example.demo.dto.TrainModelDto;
 import com.example.demo.service.FNNArtificialEngineService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,16 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/ai/v1")
+@RequestMapping("/api/v1/ai")
 public class ArtificialController {
 
     @Autowired
     private FNNArtificialEngineService model;
 
     @PostMapping("/train")
-    public ResponseEntity<GenericResponse> processFile(@Valid @RequestBody TrainModelDto data) {
+    public ResponseEntity<GenericResponse> processFile(@Valid @RequestBody final TrainModelDto data) {
         try {
-            model.trainFNN(data.getData(), data.getTarget(), data.getEpocs());
+            model.trainFNN(data.getData(), data.getTarget(), data.getEpocs(), data.getLearningRate());
             return ResponseEntity.ok().body(new GenericResponse(true, "Train completed"));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
@@ -38,7 +37,7 @@ public class ArtificialController {
     }
 
     @PostMapping("/calculate")
-    public ResponseEntity<GenericResponse> calculate(@Valid @RequestBody SimpleCalculation data) {
+    public ResponseEntity<GenericResponse> calculate(@Valid @RequestBody final SimpleCalculation data) {
         try {
             double result = model.calculate(data.getInput());
             return ResponseEntity.ok().body(new GenericResponse(true, String.format("The result of the result is: %s", result)));

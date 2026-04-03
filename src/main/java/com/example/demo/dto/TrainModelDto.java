@@ -15,6 +15,16 @@ public class TrainModelDto implements Serializable {
 
     private int epocs = 100;
 
+    private double learningRate = 0.015;
+
+    public double getLearningRate() {
+        return learningRate;
+    }
+
+    public void setLearningRate(double learningRate) {
+        this.learningRate = learningRate;
+    }
+
     public double[][] getData() {
         return data;
     }

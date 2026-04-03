@@ -13,17 +13,17 @@ public class FNNArtificialEngineServiceImpl implements FNNArtificialEngineServic
     private NeuronalNetwork net;
 
     @Override
-    public void trainFNN(double[][] x, double[][] y, int epocs) {
+    public void trainFNN(double[][] x, double[][] y, int epocs, double learningRate) {
         net = NeuronalNetwork.getInstance();
         net.clear();
 
-        final NeuronLayer hidden = new NeuronLayer(0.4);
+        final NeuronLayer hidden = new NeuronLayer(learningRate);
         hidden.addNeuron(new Neuron(3, 0.0));
         hidden.addNeuron(new Neuron(3, 0.0));
         hidden.addNeuron(new Neuron(3, 0.0));
         hidden.addNeuron(new Neuron(3, 0.0));
 
-        final NeuronLayer out = new NeuronLayer(0.4);
+        final NeuronLayer out = new NeuronLayer(learningRate);
         out.addNeuron(new Neuron(4, 0.0));
 
         net.addLayer(hidden);
