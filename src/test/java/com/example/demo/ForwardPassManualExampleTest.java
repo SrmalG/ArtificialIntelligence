@@ -17,12 +17,15 @@ public class ForwardPassManualExampleTest {
         final double[] input = {0, 1};
 
         final NeuronalNetwork net = NeuronalNetwork.getInstance();
-        final NeuronLayer hidden = new NeuronLayer(0.0);
+        net.clear();
 
+        final NeuronLayer hidden = new NeuronLayer(0.0);
         final Neuron z1 = new Neuron(2, 0.3);
-        z1.setWeight(new double[]{0.6, -0.1});
         final Neuron z2 = new Neuron(2, 0.5);
+
+        z1.setWeight(new double[]{0.6, -0.1});
         z2.setWeight(new double[]{-0.3, 0.4});
+
         hidden.addNeuron(z1);
         hidden.addNeuron(z2);
 
