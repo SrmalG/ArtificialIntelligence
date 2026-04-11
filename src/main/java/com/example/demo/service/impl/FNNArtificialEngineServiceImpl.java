@@ -8,10 +8,12 @@ import com.example.demo.service.FNNArtificialEngineService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 @Service
 public class FNNArtificialEngineServiceImpl implements FNNArtificialEngineService {
 
+    private static final Random RNG = new Random(42);
     private NeuronalNetwork net;
 
     @Override
@@ -29,14 +31,15 @@ public class FNNArtificialEngineServiceImpl implements FNNArtificialEngineServic
         for (int size : hiddenLayers) {
             final NeuronLayer layer = new NeuronLayer(learningRate);
             for (int i = 0; i < size; i++) {
-                layer.addNeuron(new Neuron(inputDim, 0.0));
+                double bias = RNG.nextDouble() * 0.02 - 0.01;
+                layer.addNeuron(new Neuron(inputDim, bias));
             }
             net.addLayer(layer);
             inputDim = size;
         }
 
         final NeuronLayer out = new NeuronLayer(learningRate);
-        out.addNeuron(new Neuron(inputDim, 0.0));
+        out.addNeuron(new Neuron(inputDim, RNG.nextDouble() * 0.02 - 0.01));
         net.addLayer(out);
 
         return net.train(x, y, epochs);

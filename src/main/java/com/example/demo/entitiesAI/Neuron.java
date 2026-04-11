@@ -1,8 +1,11 @@
 package com.example.demo.entitiesAI;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class Neuron {
+
+    private static final Random RNG = new Random(42);
 
     private double[] weight;
     private double bias;
@@ -36,8 +39,14 @@ public class Neuron {
 
     public Neuron(final Integer dimension, final double bias) {
         this.weight = new double[dimension];
-        this.bias = bias;
         this.lastInput = new double[dimension];
+        this.bias = bias;
+
+        // Xavier initialization for weights
+        double limit = Math.sqrt(6.0 / (dimension + 1));
+        for (int i = 0; i < dimension; i++) {
+            this.weight[i] = RNG.nextDouble() * 2 * limit - limit;
+        }
     }
 
     public double[] getWeight() {
