@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class NeuronalNetwork {
 
-    private static NeuronalNetwork instance;
+    private static final NeuronalNetwork instance = new NeuronalNetwork();
     private final ArrayList<NeuronLayer> neuronalNetwork;
 
     private NeuronalNetwork() {
@@ -12,9 +12,6 @@ public class NeuronalNetwork {
     }
 
     public static NeuronalNetwork getInstance() {
-        if (instance == null) {
-            instance = new NeuronalNetwork();
-        }
         return instance;
     }
     public void addLayer(final NeuronLayer layer) {
