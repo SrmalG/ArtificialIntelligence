@@ -33,9 +33,9 @@ public class ArtificialController {
             ArrayList<Double> losses = model.trainFNN(data.getData(), data.getTarget(), data.getEpochs(), data.getLearningRate(), data.getHiddenLayers());
             log.info("Training completed – final loss: {}", losses.get(losses.size() - 1));
             if(data.isLossesAvailable())
-                return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", null,  losses.get(losses.size() - 1)));
+                return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", losses, losses.get(losses.size() - 1)));
             else {
-                return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", new ArrayList<>()));
+                return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", new ArrayList<>(),losses.get(losses.size() - 1)));
             }
         } catch (IllegalArgumentException e) {
             return ResponseEntity

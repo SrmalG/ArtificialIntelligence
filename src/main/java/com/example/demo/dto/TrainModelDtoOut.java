@@ -20,11 +20,11 @@ public class TrainModelDtoOut {
     public TrainModelDtoOut() {}
 
 
-    public TrainModelDtoOut(boolean success, String message, ArrayList<Double> losses, double lastLoss) {
+    public TrainModelDtoOut(boolean success, String message, final ArrayList<Double> losses,final double lastLoss) {
         this.success = success;
         this.message = message;
-        this.losses = losses;
         this.lastLoss = lastLoss;
+        this.losses = losses;
     }
 
     public TrainModelDtoOut(boolean success, String message, ArrayList<Double> losses) {
