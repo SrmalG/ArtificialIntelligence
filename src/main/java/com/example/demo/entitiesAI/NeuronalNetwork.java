@@ -78,6 +78,7 @@ public class NeuronalNetwork {
                 // Forward pass
                 double[] output = forwardVector(inputs[i]);
 
+                //MSE error
                 double sampleLoss = 0.0;
                 for (int j = 0; j < output.length; j++) {
                     double error = output[j] - targets[i][j];

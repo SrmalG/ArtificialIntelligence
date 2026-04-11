@@ -19,6 +19,19 @@ public class TrainModelDto implements Serializable {
 
     private int[] hiddenLayers = {4};
 
+    private boolean lossesAvailable;
+
+
+    public boolean isLossesAvailable() {
+        return lossesAvailable;
+    }
+
+    public void setLossesAvailable(boolean lossesAvailable) {
+        this.lossesAvailable = lossesAvailable;
+    }
+
+
+
     public int[] getHiddenLayers() {
         return hiddenLayers;
     }

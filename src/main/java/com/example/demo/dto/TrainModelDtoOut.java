@@ -7,8 +7,25 @@ public class TrainModelDtoOut {
     private boolean success;
     private String message;
     private ArrayList<Double> losses;
+    private double lastLoss;
+
+    public double isLastLoss() {
+        return lastLoss;
+    }
+
+    public void setLastLoss(double lastLoss) {
+        this.lastLoss = lastLoss;
+    }
 
     public TrainModelDtoOut() {}
+
+
+    public TrainModelDtoOut(boolean success, String message, ArrayList<Double> losses, double lastLoss) {
+        this.success = success;
+        this.message = message;
+        this.losses = losses;
+        this.lastLoss = lastLoss;
+    }
 
     public TrainModelDtoOut(boolean success, String message, ArrayList<Double> losses) {
         this.success = success;
