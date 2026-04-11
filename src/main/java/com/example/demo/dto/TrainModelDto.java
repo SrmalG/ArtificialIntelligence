@@ -1,6 +1,6 @@
 package com.example.demo.dto;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -8,9 +8,9 @@ public class TrainModelDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotBlank
+    @NotNull
     private double[][] data;
-    @NotBlank
+    @NotNull
     private double[][] target;
 
     private int epochs = 100;

@@ -2,9 +2,7 @@ package com.example.demo.entitiesAI;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
-import static com.example.demo.utilities.Utilities.calculateCombination;
 import static com.example.demo.utilities.Utilities.sigmoidFunction;
 
 public class NeuronLayer {

@@ -2,6 +2,8 @@ package com.example.demo.web;
 
 import com.example.demo.dto.*;
 import com.example.demo.service.FNNArtificialEngineService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,8 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/api/v1/ai")
 public class ArtificialController {
+
+    private static final Logger log = LoggerFactory.getLogger(ArtificialController.class);
 
     @Value("${app.version}")
     private String version;
@@ -27,8 +31,8 @@ public class ArtificialController {
     public ResponseEntity<TrainModelDtoOut> processFile(@Valid @RequestBody final TrainModelDto data) {
         try {
             ArrayList<Double> losses = model.trainFNN(data.getData(), data.getTarget(), data.getEpochs(), data.getLearningRate());
-            System.out.println(losses.get(losses.size()-1));
-            return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", null));
+            log.info("Training completed – final loss: {}", losses.get(losses.size() - 1));
+            return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", losses));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
