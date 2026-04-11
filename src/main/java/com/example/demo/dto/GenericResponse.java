@@ -8,6 +8,8 @@ public class GenericResponse {
     private String message;
     private ArrayList<?> arraylist;
 
+    public GenericResponse() {}
+
     public GenericResponse(boolean success, String message) {
         this.success = success;
         this.message = message;

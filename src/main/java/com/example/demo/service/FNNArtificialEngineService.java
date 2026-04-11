@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public interface FNNArtificialEngineService {
 
-    ArrayList<Double> trainFNN(double[][] x, double[][] y, int epocs, double learningRate);
+    ArrayList<Double> trainFNN(double[][] x, double[][] y, int epochs, double learningRate, int[] hiddenLayers);
 
     double calculate(double[] input);
 

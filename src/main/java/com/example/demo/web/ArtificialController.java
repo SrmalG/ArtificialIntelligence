@@ -30,7 +30,7 @@ public class ArtificialController {
     @PostMapping("/train")
     public ResponseEntity<TrainModelDtoOut> processFile(@Valid @RequestBody final TrainModelDto data) {
         try {
-            ArrayList<Double> losses = model.trainFNN(data.getData(), data.getTarget(), data.getEpochs(), data.getLearningRate());
+            ArrayList<Double> losses = model.trainFNN(data.getData(), data.getTarget(), data.getEpochs(), data.getLearningRate(), data.getHiddenLayers());
             log.info("Training completed – final loss: {}", losses.get(losses.size() - 1));
             return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", losses));
         } catch (IllegalArgumentException e) {

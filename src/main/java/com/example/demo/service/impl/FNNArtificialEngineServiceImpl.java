@@ -15,20 +15,28 @@ public class FNNArtificialEngineServiceImpl implements FNNArtificialEngineServic
     private NeuronalNetwork net;
 
     @Override
-    public ArrayList<Double> trainFNN(double[][] x, double[][] y, int epochs, double learningRate) {
+    public ArrayList<Double> trainFNN(double[][] x, double[][] y, int epochs, double learningRate, int[] hiddenLayers) {
+        if (x == null || x.length == 0)
+            throw new IllegalArgumentException(Constants.NO_DATA_INFORMED);
+        if (hiddenLayers == null || hiddenLayers.length == 0)
+            throw new IllegalArgumentException("At least one hidden layer is required");
+
         net = NeuronalNetwork.getInstance();
         net.clear();
 
-        final NeuronLayer hidden = new NeuronLayer(learningRate);
-        hidden.addNeuron(new Neuron(3, 0.0));
-        hidden.addNeuron(new Neuron(3, 0.0));
-        hidden.addNeuron(new Neuron(3, 0.0));
-        hidden.addNeuron(new Neuron(3, 0.0));
+        int inputDim = x[0].length;
+
+        for (int size : hiddenLayers) {
+            final NeuronLayer layer = new NeuronLayer(learningRate);
+            for (int i = 0; i < size; i++) {
+                layer.addNeuron(new Neuron(inputDim, 0.0));
+            }
+            net.addLayer(layer);
+            inputDim = size;
+        }
 
         final NeuronLayer out = new NeuronLayer(learningRate);
-        out.addNeuron(new Neuron(4, 0.0));
-
-        net.addLayer(hidden);
+        out.addNeuron(new Neuron(inputDim, 0.0));
         net.addLayer(out);
 
         return net.train(x, y, epochs);

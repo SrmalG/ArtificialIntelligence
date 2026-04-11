@@ -17,6 +17,16 @@ public class TrainModelDto implements Serializable {
 
     private double learningRate = 0.05;
 
+    private int[] hiddenLayers = {4};
+
+    public int[] getHiddenLayers() {
+        return hiddenLayers;
+    }
+
+    public void setHiddenLayers(int[] hiddenLayers) {
+        this.hiddenLayers = hiddenLayers;
+    }
+
     public double getLearningRate() {
         return learningRate;
     }
@@ -55,7 +65,9 @@ public class TrainModelDto implements Serializable {
         return "TrainModelDto{" +
                 "x=" + Arrays.toString(data) +
                 ", y=" + Arrays.toString(target) +
-                ", epocs=" + epochs +
+                ", epochs=" + epochs +
+                ", learningRate=" + learningRate +
+                ", hiddenLayers=" + Arrays.toString(hiddenLayers) +
                 '}';
     }
 }

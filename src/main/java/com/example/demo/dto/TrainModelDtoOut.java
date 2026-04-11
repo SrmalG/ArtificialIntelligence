@@ -8,6 +8,8 @@ public class TrainModelDtoOut {
     private String message;
     private ArrayList<Double> losses;
 
+    public TrainModelDtoOut() {}
+
     public TrainModelDtoOut(boolean success, String message, ArrayList<Double> losses) {
         this.success = success;
         this.message = message;
