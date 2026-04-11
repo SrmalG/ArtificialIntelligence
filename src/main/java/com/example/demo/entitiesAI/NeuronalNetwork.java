@@ -58,7 +58,7 @@ public class NeuronalNetwork {
      * - inputs: shape [nSamples][nFeatures]
      * - targets: shape [nSamples][nOutputs] (must match output layer size)
      */
-    public void train(double[][] inputs, double[][] targets, int epochs) {
+    public ArrayList<Double> train(double[][] inputs, double[][] targets, int epochs) {
         if (inputs == null || targets == null) {
             throw new IllegalArgumentException("inputs and targets must not be null");
         }
@@ -72,15 +72,37 @@ public class NeuronalNetwork {
             throw new IllegalArgumentException("epochs must be >= 1");
         }
 
+        final ArrayList<Double> epochLosses = new ArrayList<>(epochs);
+
         for (int epoch = 0; epoch < epochs; epoch++) {
+            double totalLoss = 0.0;
+
             for (int i = 0; i < inputs.length; i++) {
-                forwardVector(inputs[i]);
+                // Forward pass
+                double[] output = forwardVector(inputs[i]);
+
+                double sampleLoss = 0.0;
+                for (int j = 0; j < output.length; j++) {
+                    double error = output[j] - targets[i][j];
+                    sampleLoss += error * error;
+                }
+                sampleLoss /= output.length;
+                totalLoss += sampleLoss;
+
+                // Backpropagation
                 putDeltas(targets[i]);
                 for (NeuronLayer layer : neuronalNetwork) {
                     layer.applyGradients();
                 }
             }
+
+            // Loss promedio de toda la época
+            double averageLoss = totalLoss / inputs.length;
+            epochLosses.add(averageLoss);
+
         }
+
+        return epochLosses;
     }
 
     /**

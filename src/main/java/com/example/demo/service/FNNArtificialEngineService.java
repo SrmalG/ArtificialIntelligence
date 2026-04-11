@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
+
 public interface FNNArtificialEngineService {
 
-    void trainFNN(double[][] x, double[][] y, int epocs, double learningRate);
+    ArrayList<Double> trainFNN(double[][] x, double[][] y, int epocs, double learningRate);
 
     double calculate(double[] input);
 

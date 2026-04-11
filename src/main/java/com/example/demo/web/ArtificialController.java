@@ -1,30 +1,50 @@
 package com.example.demo.web;
 
-import com.example.demo.dto.GenericResponse;
-import com.example.demo.dto.SimpleCalculation;
-import com.example.demo.dto.TrainModelDto;
+import com.example.demo.dto.*;
 import com.example.demo.service.FNNArtificialEngineService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/v1/ai")
 public class ArtificialController {
 
-    @Autowired
-    private FNNArtificialEngineService model;
+    @Value("${app.version}")
+    private String version;
+
+    private static final long START_TIME = System.currentTimeMillis();
+    private final FNNArtificialEngineService model;
+
+    public ArtificialController(FNNArtificialEngineService model) {
+        this.model = model;
+    }
 
     @PostMapping("/train")
-    public ResponseEntity<GenericResponse> processFile(@Valid @RequestBody final TrainModelDto data) {
+    public ResponseEntity<TrainModelDtoOut> processFile(@Valid @RequestBody final TrainModelDto data) {
         try {
-            model.trainFNN(data.getData(), data.getTarget(), data.getEpocs(), data.getLearningRate());
-            return ResponseEntity.ok().body(new GenericResponse(true, "Train completed"));
+            ArrayList<Double> losses = model.trainFNN(data.getData(), data.getTarget(), data.getEpochs(), data.getLearningRate());
+            System.out.println(losses.get(losses.size()-1));
+            return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", losses));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new TrainModelDtoOut(false,e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .internalServerError()
+                    .body(new TrainModelDtoOut(false,e.getMessage()));
+        }
+    }
+
+    @PostMapping("/calculate")
+    public ResponseEntity<GenericResponse> calculate(@Valid @RequestBody final SimpleCalculation data) {
+        try {
+            double result = model.calculate(data.getInput());
+            return ResponseEntity.ok().body(new GenericResponse(true, String.format("The result is: %s", result)));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
@@ -36,19 +56,18 @@ public class ArtificialController {
         }
     }
 
-    @PostMapping("/calculate")
-    public ResponseEntity<GenericResponse> calculate(@Valid @RequestBody final SimpleCalculation data) {
-        try {
-            double result = model.calculate(data.getInput());
-            return ResponseEntity.ok().body(new GenericResponse(true, String.format("The result of the result is: %s", result)));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new GenericResponse(false,e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity
-                    .internalServerError()
-                    .body(new GenericResponse(false,e.getMessage()));
-        }
+    @GetMapping("/health")
+    public ResponseEntity<HealthDto> health() {
+
+        long uptimeMillis = System.currentTimeMillis() - START_TIME;
+        long uptimeSeconds = uptimeMillis / 1000;
+
+        final HealthDto response = new HealthDto(
+                "UP",
+                uptimeSeconds + "s",
+                version
+        );
+
+        return ResponseEntity.ok(response);
     }
 }

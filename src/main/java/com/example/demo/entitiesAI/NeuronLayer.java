@@ -18,19 +18,29 @@ public class NeuronLayer {
     }
 
     /**
-     * Ejecuta el forward de toda la capa en paralelo.
+     * Ejecuta el forward de toda la capa
      */
     public double[] forwardLayer(final double[] inputs) {
         final int size = neurons.size();
         final double[] outputs = new double[size];
 
-        IntStream.range(0, size).forEach(i -> {
-            final Neuron n = neurons.get(i);
-            final double linealCombination = calculateCombination(inputs, n.getWeight(), n.getBias());
-            outputs[i] = sigmoidFunction(linealCombination);
-            n.setLastOutput(outputs[i]);
+        for (int i = 0; i < size; i++) {
+            Neuron n = neurons.get(i);
+
+            double[] weights = n.getWeight();
+            double bias = n.getBias();
+
+            double sum = bias;
+            for (int j = 0; j < inputs.length; j++) {
+                sum += inputs[j] * weights[j];
+            }
+
+            double output = sigmoidFunction(sum);
+
+            outputs[i] = output;
+            n.setLastOutput(output);
             n.setLastInput(inputs);
-        });
+        }
 
         return outputs;
     }

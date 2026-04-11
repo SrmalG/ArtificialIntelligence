@@ -13,9 +13,9 @@ public class TrainModelDto implements Serializable {
     @NotBlank
     private double[][] target;
 
-    private int epocs = 100;
+    private int epochs = 100;
 
-    private double learningRate = 0.015;
+    private double learningRate = 0.05;
 
     public double getLearningRate() {
         return learningRate;
@@ -42,12 +42,12 @@ public class TrainModelDto implements Serializable {
     }
 
 
-    public int getEpocs() {
-        return epocs;
+    public int getEpochs() {
+        return epochs;
     }
 
-    public void setEpocs(int epocs) {
-        this.epocs = epocs;
+    public void setEpochs(int epochs) {
+        this.epochs = epochs;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class TrainModelDto implements Serializable {
         return "TrainModelDto{" +
                 "x=" + Arrays.toString(data) +
                 ", y=" + Arrays.toString(target) +
-                ", epocs=" + epocs +
+                ", epocs=" + epochs +
                 '}';
     }
 }
