@@ -9,7 +9,7 @@ public class TrainModelDtoOut {
     private ArrayList<Double> losses;
     private double lastLoss;
 
-    public double isLastLoss() {
+    public double getLastLoss() {
         return lastLoss;
     }
 
