@@ -28,7 +28,7 @@ public class ArtificialController {
         try {
             ArrayList<Double> losses = model.trainFNN(data.getData(), data.getTarget(), data.getEpochs(), data.getLearningRate());
             System.out.println(losses.get(losses.size()-1));
-            return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", losses));
+            return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", null));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()

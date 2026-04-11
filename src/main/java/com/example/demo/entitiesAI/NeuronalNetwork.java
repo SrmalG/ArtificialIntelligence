@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class NeuronalNetwork {
 
     private static NeuronalNetwork instance;
-    private ArrayList<NeuronLayer> neuronalNetwork;
+    private final ArrayList<NeuronLayer> neuronalNetwork;
 
     private NeuronalNetwork() {
         this.neuronalNetwork = new ArrayList<>();
