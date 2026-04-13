@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.constants.Constants;
-import com.example.demo.dto.ArrayCalculations;
 import com.example.demo.dto.CalculateResponse;
 import com.example.demo.entitiesAI.Neuron;
 import com.example.demo.entitiesAI.NeuronLayer;
@@ -60,14 +59,18 @@ public class FNNArtificialEngineServiceImpl implements FNNArtificialEngineServic
 
     @Override
     public ArrayList<CalculateResponse> calculateArray(double[][] input) {
+        if (net == null)
+            throw new IllegalArgumentException(Constants.MODEL_NOT_TRAINED);
+        if (input == null || input.length == 0)
+            throw new IllegalArgumentException(Constants.NO_DATA_INFORMED);
+
         final ArrayList<CalculateResponse> calculateResponses = new ArrayList<>(input.length);
 
         for (double[] doubles : input) {
-            double result = net.forward(doubles);
+            final double result = net.forward(doubles);
             calculateResponses.add(new CalculateResponse(true, String.format("The result is: %s", result), Utilities.obtainResult(result), doubles));
         }
 
         return calculateResponses;
-
     }
 }

@@ -17,6 +17,7 @@ public class Utilities {
      * @throws IllegalArgumentException if data and weight are not the same length or if bias is not valid.
      * @since 1.0
      */
+    @Deprecated
     public static double calculateCombination(final double[] data, final double[] weight, final double bias) {
         if (data == null || weight == null) {
             throw new IllegalArgumentException("data and weight must not be null");

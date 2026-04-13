@@ -16,7 +16,7 @@ public class NeuronLayer {
     }
 
     /**
-     * Ejecuta el forward de toda la capa
+     * Ejecuta el forward de toda la capa con el calculo combinacional
      */
     public double[] forwardLayer(final double[] inputs) {
         final int size = neurons.size();

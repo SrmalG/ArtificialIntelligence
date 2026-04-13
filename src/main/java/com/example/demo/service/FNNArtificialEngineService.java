@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.ArrayCalculations;
 import com.example.demo.dto.CalculateResponse;
 
 import java.util.ArrayList;

@@ -2,7 +2,12 @@ package com.example.demo.entitiesAI;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class NeuronalNetwork {
+
+    private static final Logger log = LoggerFactory.getLogger(NeuronalNetwork.class);
 
     private static final NeuronalNetwork instance = new NeuronalNetwork();
     private final ArrayList<NeuronLayer> neuronalNetwork;
@@ -97,6 +102,13 @@ public class NeuronalNetwork {
             // Loss promedio de toda la época
             double averageLoss = totalLoss / inputs.length;
             epochLosses.add(averageLoss);
+
+            // Progress log each 10%
+            int step = Math.max(1, epochs / 10);
+            if (epoch % step == 0 || epoch == epochs - 1) {
+                int pct = (int) ((epoch + 1) * 100.0 / epochs);
+                log.info("Training {}% ({}/{}) – loss: {}", pct, epoch + 1, epochs, String.format("%.6e", averageLoss));
+            }
 
         }
 
