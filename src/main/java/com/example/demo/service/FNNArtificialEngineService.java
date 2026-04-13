@@ -1,5 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.ArrayCalculations;
+import com.example.demo.dto.CalculateResponse;
+
 import java.util.ArrayList;
 
 public interface FNNArtificialEngineService {
@@ -8,4 +11,5 @@ public interface FNNArtificialEngineService {
 
     double calculate(double[] input);
 
+    ArrayList<CalculateResponse> calculateArray(double[][] input);
 }

@@ -65,6 +65,24 @@ public class ArtificialController {
         }
     }
 
+    @PostMapping("/calculateArray")
+    public ResponseEntity<?> calculateArray(@Valid @RequestBody final ArrayCalculations data) {
+        try {
+
+            final ArrayList<CalculateResponse> calculateResponseArrays = model.calculateArray(data.getInputs());
+            return ResponseEntity.ok().body(calculateResponseArrays);
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new GenericResponse(false,e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .internalServerError()
+                    .body(new GenericResponse(false,e.getMessage()));
+        }
+    }
+
     @GetMapping("/health")
     public ResponseEntity<HealthDto> health() {
 

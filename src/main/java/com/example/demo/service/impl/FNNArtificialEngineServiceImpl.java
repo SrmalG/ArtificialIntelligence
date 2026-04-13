@@ -1,10 +1,13 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.constants.Constants;
+import com.example.demo.dto.ArrayCalculations;
+import com.example.demo.dto.CalculateResponse;
 import com.example.demo.entitiesAI.Neuron;
 import com.example.demo.entitiesAI.NeuronLayer;
 import com.example.demo.entitiesAI.NeuronalNetwork;
 import com.example.demo.service.FNNArtificialEngineService;
+import com.example.demo.utilities.Utilities;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -55,5 +58,16 @@ public class FNNArtificialEngineServiceImpl implements FNNArtificialEngineServic
         return net.forward(input);
     }
 
+    @Override
+    public ArrayList<CalculateResponse> calculateArray(double[][] input) {
+        final ArrayList<CalculateResponse> calculateResponses = new ArrayList<>(input.length);
 
+        for (double[] doubles : input) {
+            double result = net.forward(doubles);
+            calculateResponses.add(new CalculateResponse(true, String.format("The result is: %s", result), Utilities.obtainResult(result), doubles));
+        }
+
+        return calculateResponses;
+
+    }
 }
