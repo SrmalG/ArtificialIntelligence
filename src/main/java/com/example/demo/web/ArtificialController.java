@@ -53,7 +53,7 @@ public class ArtificialController {
     public ResponseEntity<?> calculate(@Valid @RequestBody final SimpleCalculation data) {
         try {
             double result = model.calculate(data.getInput());
-            return ResponseEntity.ok().body(new CalculateResponse(true, String.format("The result is: %s", result), Utilities.obtainResult(result)));
+            return ResponseEntity.ok().body(new CalculateResponse(true, String.format("The result is: %s", result), Utilities.obtainResult(result), data.getInput()));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
