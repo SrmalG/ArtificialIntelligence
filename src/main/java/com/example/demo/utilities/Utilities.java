@@ -84,4 +84,18 @@ public class Utilities {
         return (forwardResult - target) * forwardResult * (1 - forwardResult);
     }
 
+    /**
+     * Computes the binary classification output for a Feedforward Neural Network (FNN).
+     * <p>
+     * This method applies a threshold at 0.5 to determine the predicted class:
+     * returns 1 if the input value is greater than 0.5, otherwise returns 0.
+     *
+     * @param value the output value (e.g., probability or activation) from the FNN
+     * @return 1 if {@code value > 0.5}, otherwise 0
+     */
+    public static double obtainResult(double value){
+        if (value > .5) return 1;
+        return 0;
+    }
+
 }

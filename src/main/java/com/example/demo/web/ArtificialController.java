@@ -2,6 +2,7 @@ package com.example.demo.web;
 
 import com.example.demo.dto.*;
 import com.example.demo.service.FNNArtificialEngineService;
+import com.example.demo.utilities.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,10 +50,10 @@ public class ArtificialController {
     }
 
     @PostMapping("/calculate")
-    public ResponseEntity<GenericResponse> calculate(@Valid @RequestBody final SimpleCalculation data) {
+    public ResponseEntity<?> calculate(@Valid @RequestBody final SimpleCalculation data) {
         try {
             double result = model.calculate(data.getInput());
-            return ResponseEntity.ok().body(new GenericResponse(true, String.format("The result is: %s", result)));
+            return ResponseEntity.ok().body(new CalculateResponse(true, String.format("The result is: %s", result), Utilities.obtainResult(result)));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
