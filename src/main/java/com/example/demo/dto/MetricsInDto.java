@@ -1,24 +1,27 @@
 package com.example.demo.dto;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class MetricsInDto {
 
-    @NotBlank
-    double[] predictions;
+    @NotEmpty(message = "Predictions array cannot be empty")
+    private double[] predictions;
 
-    @NotBlank
-    double[] targets;
+    @NotEmpty(message = "Targets array cannot be empty")
+    private double[] targets;
 
-    @NotBlank
-    double threshold;
+    @NotNull(message = "Threshold is required")
+    private double threshold; // Changed to Object wrapper to allow null-checking
+
+    public MetricsInDto() {
+    }
 
     public MetricsInDto(double[] predictions, double[] targets, double threshold) {
         this.predictions = predictions;
         this.targets = targets;
         this.threshold = threshold;
     }
-
 
     public double[] getPredictions() {
         return predictions;

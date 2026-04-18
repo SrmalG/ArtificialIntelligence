@@ -2,6 +2,8 @@ package com.example.demo.service.impl;
 
 import com.example.demo.constants.Constants;
 import com.example.demo.dto.CalculateResponse;
+import com.example.demo.dto.MetricsInDto;
+import com.example.demo.dto.MetricsOutDto;
 import com.example.demo.entitiesAI.Neuron;
 import com.example.demo.entitiesAI.NeuronLayer;
 import com.example.demo.entitiesAI.NeuronalNetwork;
@@ -72,5 +74,55 @@ public class FNNArtificialEngineServiceImpl implements FNNArtificialEngineServic
         }
 
         return calculateResponses;
+    }
+
+    @Override
+    public MetricsOutDto calculateMetrics(final MetricsInDto in) {
+        if (in.getPredictions().length != in.getTargets().length) {
+            throw new IllegalArgumentException("Predictions and targets must have the same length");
+        }
+
+        // Inicializar la matriz de confusión
+        final double[][] matrixConf = new double[2][2];
+
+        int truePositive = 0;
+        int trueNegative = 0;
+        int falsePositive = 0;
+        int falseNegative = 0;
+
+        // Calcular la matriz de confusión
+        for (int i = 0; i < in.getPredictions().length; i++) {
+            int predicted = in.getPredictions()[i] >= in.getThreshold() ? 1 : 0;
+            int actual = (int) in.getTargets()[i];
+
+            if (predicted == 1 && actual == 1) {
+                truePositive++;
+            } else if (predicted == 0 && actual == 0) {
+                trueNegative++;
+            } else if (predicted == 1 && actual == 0) {
+                falsePositive++;
+            } else if (predicted == 0 && actual == 1) {
+                falseNegative++;
+            }
+        }
+
+        // Asignar valores a la matriz de confusión
+        matrixConf[0][0] = truePositive; // TP
+        matrixConf[0][1] = falsePositive; // FP
+        matrixConf[1][0] = falseNegative; // FN
+        matrixConf[1][1] = trueNegative; // TN
+
+        // Calcular métricas
+        int total = truePositive + trueNegative + falsePositive + falseNegative;
+        double accuracy = (double) (truePositive + trueNegative) / total; // Mide la proporción de prediccines del modelo correctas
+        double sensitivity = (double) truePositive / (truePositive + falseNegative); // Mide la capacidad del modelo para identificar instancias correctas
+        double specificity = (double) trueNegative / (trueNegative + falsePositive);  // Mide la capacidad del modelo para identificar instancias falsas
+        double balancedAccuracy = (sensitivity + specificity) / 2; // Mide la relación entre la sensitivity y specificity.
+        double precision = (double) truePositive / (truePositive + falsePositive); // proporción de predicciones positivas verdaderas
+        double f1Score = 2 * (precision * sensitivity) / (precision + sensitivity); // El balance entre la precisión y la sensibilidad.
+
+
+        // Retornar las métricas calculadas
+        return new MetricsOutDto(matrixConf, accuracy, f1Score, balancedAccuracy);
     }
 }

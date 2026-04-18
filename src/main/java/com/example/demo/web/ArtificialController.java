@@ -102,7 +102,7 @@ public class ArtificialController {
 
     @PostMapping("/metrics")
     public ResponseEntity<MetricsOutDto> metrics(@Valid @RequestBody final MetricsInDto in) {
-        final MetricsOutDto metricsOutDto = new MetricsOutDto();
+        final MetricsOutDto metricsOutDto = model.calculateMetrics(in);
         return ResponseEntity.ok().body(metricsOutDto);
     }
 }
