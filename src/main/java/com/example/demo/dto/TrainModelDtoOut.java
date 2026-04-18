@@ -8,6 +8,7 @@ public class TrainModelDtoOut {
     private String message;
     private ArrayList<Double> losses;
     private double lastLoss;
+    private double timeToTrain;
 
     public double getLastLoss() {
         return lastLoss;
@@ -19,8 +20,23 @@ public class TrainModelDtoOut {
 
     public TrainModelDtoOut() {}
 
+    public double getTimeToTrain() {
+        return timeToTrain;
+    }
 
-    public TrainModelDtoOut(boolean success, String message, final ArrayList<Double> losses,final double lastLoss) {
+    public void setTimeToTrain(double timeToTrain) {
+        this.timeToTrain = timeToTrain;
+    }
+
+    public TrainModelDtoOut(boolean success, String message, ArrayList<Double> losses, double lastLoss, double timeToTrain) {
+        this.success = success;
+        this.message = message;
+        this.losses = losses;
+        this.lastLoss = lastLoss;
+        this.timeToTrain = timeToTrain;
+    }
+
+    public TrainModelDtoOut(boolean success, String message, final ArrayList<Double> losses, final double lastLoss) {
         this.success = success;
         this.message = message;
         this.lastLoss = lastLoss;

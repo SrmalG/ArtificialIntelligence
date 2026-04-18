@@ -31,12 +31,14 @@ public class ArtificialController {
     @PostMapping("/train")
     public ResponseEntity<TrainModelDtoOut> processFile(@Valid @RequestBody final TrainModelDto data) {
         try {
+            long startTraining = System.currentTimeMillis();
             ArrayList<Double> losses = model.trainFNN(data.getData(), data.getTarget(), data.getEpochs(), data.getLearningRate(), data.getHiddenLayers());
+            long end = System.currentTimeMillis() - startTraining;
             log.info("Training completed – final loss: {}", losses.get(losses.size() - 1));
             if(data.isLossesAvailable())
-                return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", losses, losses.get(losses.size() - 1)));
+                return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", losses, losses.get(losses.size() - 1), end));
             else {
-                return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", new ArrayList<>(),losses.get(losses.size() - 1)));
+                return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", new ArrayList<>(),losses.get(losses.size() - 1), end));
             }
         } catch (IllegalArgumentException e) {
             return ResponseEntity
@@ -96,5 +98,11 @@ public class ArtificialController {
         );
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/metrics")
+    public ResponseEntity<MetricsOutDto> metrics(@Valid @RequestBody final MetricsInDto in) {
+        final MetricsOutDto metricsOutDto = new MetricsOutDto();
+        return ResponseEntity.ok().body(metricsOutDto);
     }
 }

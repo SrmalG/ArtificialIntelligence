@@ -11,4 +11,6 @@ public interface FNNArtificialEngineService {
     double calculate(double[] input);
 
     ArrayList<CalculateResponse> calculateArray(double[][] input);
+
+
 }
