@@ -7,6 +7,21 @@ public class ArrayCalculations {
     @NotNull
     double[][] inputs;
 
+    boolean showInfo;
+
+    public boolean isShowInfo() {
+        return showInfo;
+    }
+
+    public void setShowInfo(boolean showInfo) {
+        this.showInfo = showInfo;
+    }
+
+    public ArrayCalculations(@NotNull double[][] inputs, boolean showInfo) {
+        this.inputs = inputs;
+        this.showInfo = showInfo;
+    }
+
     public ArrayCalculations() {
     }
 

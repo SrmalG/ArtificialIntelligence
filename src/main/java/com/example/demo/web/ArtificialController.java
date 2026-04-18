@@ -32,13 +32,13 @@ public class ArtificialController {
     public ResponseEntity<TrainModelDtoOut> processFile(@Valid @RequestBody final TrainModelDto data) {
         try {
             long startTraining = System.currentTimeMillis();
-            ArrayList<Double> losses = model.trainFNN(data.getData(), data.getTarget(), data.getEpochs(), data.getLearningRate(), data.getHiddenLayers());
-            long end = System.currentTimeMillis() - startTraining;
+            final ArrayList<Double> losses = model.trainFNN(data.getData(), data.getTarget(), data.getEpochs(), data.getLearningRate(), data.getHiddenLayers());
+            long end = (System.currentTimeMillis() - startTraining) / 1000;
             log.info("Training completed – final loss: {}", losses.get(losses.size() - 1));
             if(data.isLossesAvailable())
-                return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", losses, losses.get(losses.size() - 1), end));
+                return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", losses, losses.get(losses.size() - 1), end + "s"));
             else {
-                return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", new ArrayList<>(),losses.get(losses.size() - 1), end));
+                return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", new ArrayList<>(),losses.get(losses.size() - 1), end + "s"));
             }
         } catch (IllegalArgumentException e) {
             return ResponseEntity
@@ -71,7 +71,7 @@ public class ArtificialController {
     public ResponseEntity<?> calculateArray(@Valid @RequestBody final ArrayCalculations data) {
         try {
 
-            final ArrayList<CalculateResponse> calculateResponseArrays = model.calculateArray(data.getInputs());
+            final CalculateArrayResponseDto calculateResponseArrays = model.calculateArray(data);
             return ResponseEntity.ok().body(calculateResponseArrays);
 
         } catch (IllegalArgumentException e) {

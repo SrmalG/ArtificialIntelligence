@@ -1,8 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.CalculateResponse;
-import com.example.demo.dto.MetricsInDto;
-import com.example.demo.dto.MetricsOutDto;
+import com.example.demo.dto.*;
 
 import java.util.ArrayList;
 
@@ -12,7 +10,7 @@ public interface FNNArtificialEngineService {
 
     double calculate(double[] input);
 
-    ArrayList<CalculateResponse> calculateArray(double[][] input);
+    CalculateArrayResponseDto calculateArray(ArrayCalculations data);
 
     MetricsOutDto calculateMetrics(final MetricsInDto in);
 

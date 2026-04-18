@@ -1,9 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.constants.Constants;
-import com.example.demo.dto.CalculateResponse;
-import com.example.demo.dto.MetricsInDto;
-import com.example.demo.dto.MetricsOutDto;
+import com.example.demo.dto.*;
 import com.example.demo.entitiesAI.Neuron;
 import com.example.demo.entitiesAI.NeuronLayer;
 import com.example.demo.entitiesAI.NeuronalNetwork;
@@ -60,20 +58,24 @@ public class FNNArtificialEngineServiceImpl implements FNNArtificialEngineServic
     }
 
     @Override
-    public ArrayList<CalculateResponse> calculateArray(double[][] input) {
+    public CalculateArrayResponseDto calculateArray(final ArrayCalculations data) {
         if (net == null)
             throw new IllegalArgumentException(Constants.MODEL_NOT_TRAINED);
-        if (input == null || input.length == 0)
+        if (data.getInputs() == null || data.getInputs().length == 0)
             throw new IllegalArgumentException(Constants.NO_DATA_INFORMED);
 
-        final ArrayList<CalculateResponse> calculateResponses = new ArrayList<>(input.length);
+        final ArrayList<CalculateResponse> calculateResponses = new ArrayList<>(data.getInputs().length);
+        final ArrayList<Double> predictions = new ArrayList<>(data.getInputs().length);
 
-        for (double[] doubles : input) {
+        for (double[] doubles : data.getInputs()) {
             final double result = net.forward(doubles);
-            calculateResponses.add(new CalculateResponse(true, String.format("The result is: %s", result), Utilities.obtainResult(result), doubles));
+            predictions.add(result);
+            if(data.isShowInfo())
+                calculateResponses.add(new CalculateResponse(true, String.format("The result is: %s", result), Utilities.obtainResult(result), doubles));
         }
 
-        return calculateResponses;
+
+        return new CalculateArrayResponseDto(calculateResponses,predictions);
     }
 
     @Override
