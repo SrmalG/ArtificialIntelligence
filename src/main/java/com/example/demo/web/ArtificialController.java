@@ -33,12 +33,12 @@ public class ArtificialController {
         try {
             long startTraining = System.currentTimeMillis();
             final ArrayList<Double> losses = model.trainFNN(data.getData(), data.getTarget(), data.getEpochs(), data.getLearningRate(), data.getHiddenLayers());
-            long end = (System.currentTimeMillis() - startTraining) / 1000;
+            long end = (System.currentTimeMillis() - startTraining);
             log.info("Training completed – final loss: {}", losses.get(losses.size() - 1));
             if(data.isLossesAvailable())
-                return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", losses, losses.get(losses.size() - 1), end + "s"));
+                return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", losses, losses.get(losses.size() - 1), end + "ms"));
             else {
-                return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", new ArrayList<>(),losses.get(losses.size() - 1), end + "s"));
+                return ResponseEntity.ok().body(new TrainModelDtoOut(true, "Train completed", new ArrayList<>(),losses.get(losses.size() - 1), end + "ms"));
             }
         } catch (IllegalArgumentException e) {
             return ResponseEntity
