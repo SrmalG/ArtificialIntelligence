@@ -72,29 +72,18 @@ public class SparkValidation {
     }
 
     /**
-     * Method in charge of finding null or empty values in thw row
-     * @param dataset - The datasaet which is going to be validated
+     * Method in charge of finding null or empty values in the row
+     * @param dataset - The dataset which is going to be validated
      * @return - The validated dataset
      */
     public static Dataset<Row> filterByEmptyFields(Dataset<Row> dataset) {
-        //MOCKED DATA
-        final List<String> columns = List.of(
-                "Index",
-                "Customer Id",
-                "First Name",
-                "Last Name",
-                "Company",
-                "City",
-                "Country",
-                "Phone 1",
-                "Phone 2",
-                "Email",
-                "Subscription Date",
-                "Website"
-        );
+        // Obtener columnas dinámicamente del schema, excluyendo columnas de control
+        final List<String> columns = java.util.Arrays.stream(dataset.columns())
+                .filter(colName -> !colName.equals("errorTmp") && !colName.equals("errorDesc"))
+                .collect(java.util.stream.Collectors.toList());
 
         final Column nullOrEmptyCondition = columns.stream()
-                .map(colName -> col(colName).isNull().or(trim(col(colName)).equalTo("")))
+                .map(colName -> col(colName).isNull().or(trim(col(colName).cast("string")).equalTo("")))
                 .reduce(Column::or)
                 .orElse(lit(false));
 
